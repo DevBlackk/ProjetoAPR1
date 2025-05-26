@@ -3,8 +3,7 @@
 ## Descritivo do projeto
 
 Uma aplicação para uma Biblioteca precisa armazenar informações sobre os seus
-usuários (alunos e professores), livros e sobre o empréstimo de livros. Os dados a serem
-armazenados sobre cada uma dessas entidades são apresentados a seguir:
+usuários (alunos e professores), livros e sobre o empréstimo de livros. Os dados a serem armazenados sobre cada uma dessas entidades são apresentados a seguir:
 
 - Usuário = (CPF, Nome, Rua, Nro, CEP, E-mails, Telefones, Data de Nascimento, Profissão)
 - Livro = (ISBN, Título, Gênero, Autores, Número de Páginas)
