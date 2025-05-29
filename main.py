@@ -7,7 +7,7 @@ def menu_principal():
         print("3. Empréstimos")
         print("4. Relatórios")
         print("5. Sair")
-
+        
         opcao = int(input("\nEscolha uma opção: "))
         if opcao == 1:
             if not menu_usuario():
@@ -24,6 +24,48 @@ def menu_principal():
         else:
             print("Opção inválida! Por favor, digite uma das opções acima.")
 
+def criar_lista(dados, menssagem):
+	lista_usuario = []
+	lista_usuario.append(dados)
+	print(f"{menssagem} adicionado com sucesso!")
+	return lista_usuario
+
+def criar_usuario():
+    criando = True
+	while criando:
+		try:
+			usuario = {
+			"nome": input("Digite o nome: "),
+			"cpf": input("Digite o CPF: "),
+			"endereco": input("Digite o endereço: "),
+			"numero": int(input("Digite o número: ")),
+			"cep": input("Digite o CEP: "),
+			"emails": [],
+			"telefones": [],
+			"data_nasc": input("Digite a data de nascimento: "),
+			"profissao": input("Digite a profissão: ")
+			}
+
+			multiplos_email = True
+			while multiplos_email:
+				email = input("Digite um email (ou 'sair' para terminar): ")
+				if email.lower() == 'sair':
+					multiplos_email = False
+				usuario["emails"].append(email)
+
+			multiplos_telfones = True
+			while multiplos_telfones:
+				telefone = input("Digite um telefone (ou 'sair' para terminar): ")
+				if telefone.lower() == 'sair':
+					multiplos_telfones = False
+				usuario["telefones"].append(telefone)
+
+			return criar_lista(usuario, f"{usuario['nome']}")
+
+		except ValueError:
+			print("Erro: por favor, insira um numero válido para o campo 'numero'.")
+		except Exception as e:
+			print(f"Erro ao criar usuário: {str(e)}")
 
 def menu_usuario():
     sem_menu_usuario = True
@@ -35,7 +77,7 @@ def menu_usuario():
         print("4. Deletar um usúario")
         print("5. Voltar")
         print("6. Sair do Programa")
-
+        
         opcao = int(input("\nEscolha uma opção: "))
 
         if opcao == 1:
@@ -43,7 +85,11 @@ def menu_usuario():
         elif opcao == 2:
             print("Este serviço não diponivel!\n")
         elif opcao == 3:
-            print("Este serviço não diponivel!\n")
+            lista_usuarios = criar_usuario()
+            if lista_usuarios:
+                print("Usuário criado com sucesso!")
+            else:
+                print("Erro ao criar usuário!")
         elif opcao == 4:
             print("Este serviço não diponivel!\n")
         elif opcao == 5:
@@ -54,32 +100,10 @@ def menu_usuario():
             print("Opção invalida! Por favor, digite uma das opções acima.")
 
 
-"""def criar_lista():
-
-"""
-
-
-def criar_usúario():
-    usuario = {
-        'CPF': '368.715.054-23',
-        'NOME': 'Iago Alexandre Samuel Moraes',
-        'RUA': "Rua Formosa do Araguaia",
-        'NUMERO': 390,
-        'CEP': "50690-715",
-        'EMAIL': "iago-moraes96@c-a-m.com",
-        'TELEFONE': "(81) 98733-6681",
-        'DATA_DE_NASC': "07/04/1978",
-        'PROFICAÇÃO': "Escritor"
-    }
-
-    return print(usuario)
-
 
 def main():
     menu_principal()
     criar_usúario()
-
-
 main()
 
 '''
