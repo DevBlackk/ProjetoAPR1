@@ -10,9 +10,14 @@ def salvar_usuarios():
 
 def criar_usuario():
     try:
+        cpf = input("Digite o CPF: ")
+        if buscar_usuario_por_cpf(cpf):
+            print("Erro: CPF já cadastrado!")
+            return False
+        
         usuario = {
             "nome": input("Digite o nome: "),
-            "cpf": input("Digite o CPF: "),
+            "cpf": cpf,
             "endereco": input("Digite o endereço: "),
             "numero": int(input("Digite o número: ")),
             "cep": input("Digite o CEP: "),
@@ -73,6 +78,8 @@ def excluir_usuario():
     except Exception as e:
         print(f"Erro ao excluir usuário: {str(e)}")
         return False
+
+# def editar_usuario():
 
 def listar_usuarios():
     while True:
