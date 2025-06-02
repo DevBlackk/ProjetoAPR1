@@ -6,6 +6,7 @@ possível incluir vários itens daquele mesmo atributo
 
 '''
 def submenuUsuarios():
+    usuarios = {'usuario1':{"cpf" : '23456', 'nome': 'joao'}, 'usuario2': {'cpf': '56789', 'nome': 'joana' }}
     print(f'\n Submenu Usuários:')
     print('1 - Exibir Todos')
     print('2 - Consultar Usuário')
@@ -18,7 +19,7 @@ def submenuUsuarios():
     while continuar: #repetir o menu até o usuário sair
         if opcao == '1':
             print('Exibindo usuários...')
-            #Função
+            lerUsuarios(usuarios)
         elif opcao == '2':
             print('Consultando usuário...')
             #Função
@@ -35,5 +36,25 @@ def submenuUsuarios():
             #função
         else:
             #Menu principal()
-            contiuar = False
+            continuar = False
+   
+def lerUsuarios(usuarios):
+    if len(usuarios) == 0:
+        print('Não há usuarios para exibir!')
+    else:
+        for chave, dados in usuarios.items():
+            print(f'''
+            {chave}:
+            CPF: {dados["cpf"]}
+            Nome: {dados["nome"]}
+            Rua: {dados["rua"]}, Número: {dados["nro"]}
+            CEP: {dados["cep"]}
+            E-mails: {(dados["emails"])}
+            Telefones: {(dados["telefones"])}
+            Data de Nascimento: {dados["data_nasc"]}
+            Profissão: {dados["profissao"]}
+            ''')
+
+
+ 
     
