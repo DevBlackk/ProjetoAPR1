@@ -80,7 +80,7 @@ def excluir_usuario(usuarios):
 
 def editar_usuario(usuarios):
     if not usuarios:
-        print("nenhum usuário cadastrado!")
+        print("Nenhum usuário cadastrado!")
         return False
     
     try:
@@ -115,7 +115,7 @@ def editar_usuario(usuarios):
             print("3. Remover email existente")
             print("4. Substituir todos os emails")
             
-            op_email = input("Escolaha uma opção : ")
+            op_email = input("Escolaha uma opção: ")
             if op_email == "2":
                 while True:
                     email = input("Digite o novo email (ou 'sair' para terminar): ")
@@ -131,7 +131,7 @@ def editar_usuario(usuarios):
             elif op_email == "4":
                 usuario["emails"] = []
                 while True:
-                    email = input("Digite o nove email (ou 'sair' para terminar): ")
+                    email = input("Digite o novo email (ou 'sair' para terminar): ")
                     if email.lower() == 'sair':
                         break
                     usuario["emails"].append(email)
@@ -217,6 +217,7 @@ def listar_usuarios(usuarios):
             print("Por favor, digite um número válido!")
 
 def mostrar_usuario(usuario):
+    print("\n" + "-" * 50)
     print(f"Nome: {usuario['nome']}")
     print(f"CPF: {usuario['cpf']}")
     print(f"Endereço: {usuario['endereco']}, {usuario['numero']}")
@@ -226,8 +227,6 @@ def mostrar_usuario(usuario):
     
     if 'emails' in usuario and isinstance(usuario['emails'], list):
         print("Emails:", ", ".join(usuario['emails']))
-    elif 'email' in usuario:  # Para compatibilidade com dados existentes
-        print("Email:", usuario['email'])
     else:
         print("Emails: Nenhum email cadastrado")
     
@@ -235,14 +234,10 @@ def mostrar_usuario(usuario):
         print("Telefones:", ", ".join(usuario['telefones']))
     else:
         print("Telefones: Nenhum telefone cadastrado")
-    
     print("-" * 50)
 
 def buscar_usuario_por_cpf(usuarios, cpf):
-    for usuario in usuarios:
-        if usuario['cpf'] == cpf:
-            return usuario
-    return None
+    return next((usuario for usuario in usuarios if usuario['cpf'] == cpf), None)
 
 def menu_usuario(usuarios):
     while True:
@@ -274,7 +269,212 @@ def menu_usuario(usuarios):
         except ValueError:
             print("Por favor, digite um número válido!")
 
-def menu_principal(usuarios):
+def criar_livros(livros):
+    try:
+        isbn = input("Digite o ISBN: ")
+        if buscar_livro_por_isbn(livros, isbn):
+            print("Erro: ISBN já cadastrado!")
+            return False
+        
+        livro = {
+            "Título": input("Digite o título: "),
+            "ISBN": isbn, 
+            "Gênero": input("Digite o gênero: "),
+            "Autores": [],
+            "Número de Páginas": int(input("Digite o número de páginas: "))
+        }
+
+        while True:
+            autor = input("Digite o nome do autor (ou 'sair' para terminar): ")
+            if autor.lower() == 'sair':
+                break
+            livro["autores"].append(autor)
+
+        livros.append(livro)
+        print(f"Livro '{livro['Título']}' adicionado com sucesso!")
+        return True
+
+    except ValueError:
+        print("Erro: por favor, insira um número válido para o número de páginas.")
+        return False
+    except Exception as e:
+        print(f"Erro ao criar livro: {str(e)}")
+        return False
+
+def excluir_livros(livros):
+    if not livros:
+        print("Nenhum livro cadastrado!")
+        return False
+    
+    try:
+        isbn = input("Digite o ISBN do usuário que deseja excluir: ")
+        livro = buscar_livro_por_isbn(livros, isbn)
+        
+        if livro:
+            print("\nDados do livro a ser excluído:")
+            mostrar_livros(livro)
+            
+            confrmacao = input("\nTem certeza que deseja excluir este usuário? (s/n): ")
+            if confrmacao.lower() == 's':
+                livros.remove(livro)
+                print(f"\nUsuário {livro['Título']} excluido com sucesso!")
+                return True
+            else:
+                print("Operação cancelado!")
+                return False
+        else:
+            print("Livro não encontrado!")
+            return False
+    except Exception as e:
+        print(f"Erro ao excluir livro: {str(e)}")
+        return False
+
+def editar_livros(livros):
+    if not livros:
+        print("Nenhum livro encontrado!")
+        return False
+    
+    try:
+        isbn = input("Digite o ISBN do livro que deseja editar: ")
+        livro = buscar_livro_por_isbn(livros, isbn)
+        
+        if livro:
+            print("\nDados atuais do livro:")
+            mostrar_livros(livro)
+            
+            print("\nEdição dos dados:")
+            print("Pressione ENTER para manter o valor atual")
+            
+            titulo = input(f"Título [{livro['Título']}]: ")
+            genero = input(f"Gênero [{livro['Gênero']}]: ")
+            num_paginas = input(f"Número de páginas [{livro['Número de Páginas']}]: ")
+            
+            if titulo: livro['Título'] = titulo
+            if genero: livro['Gênero'] = genero
+            if num_paginas: livro['Número de Páginas'] = int(num_paginas)
+            
+            print("\nEditar Autores:")
+            print("1. Manter autores atuais")
+            print("2. Adicionar um novo autor")
+            print("3. Remover autor existente")
+            print("4. Substituir todos os autores") 
+            
+            op_autor = input("Escolha uma opção: ")
+            if op_autor == "2":
+                while True:
+                    autor = input("Digite o novo autor (ou 'sair' para terminar): ")
+                    if autor.lower() == 'sair':
+                        break
+                    livro["Autores"].append(autor) 
+            elif op_autor == "3":
+                for i, autor in enumerate(livro["Autores"]):  
+                    print(f"{i + 1}. {autor}")
+                idx = int(input("Digite o número do autor para remover: ")) - 1  
+                if 0 <= idx < len(livro["Autores"]): 
+                    del livro["Autores"][idx]  
+            elif op_autor == "4":
+                livro["Autores"] = []  
+                while True:
+                    autor = input("Digite o novo autor (ou 'sair' para terminar): ")
+                    if autor.lower() == 'sair':
+                        break
+                    livro["Autores"].append(autor)  
+                
+            print("\nLivro atualizado com sucesso!")
+            return True
+        else:
+            print("Livro não encontrado!")
+            return False
+        
+    except ValueError as e:
+        print(f"Erro: valor inválido inserido - {str(e)}")
+        return False
+    except Exception as e:
+        print(f"Erro ao editar livro: {str(e)}")
+        return False
+
+def mostrar_livros(livro):
+    print("\n" + "-" * 50)
+    print(f"Título: {livro['Título']}")  
+    print(f"ISBN: {livro['ISBN']}")      
+    print(f"Gênero: {livro['Gênero']}")  
+    print(f"Número de Páginas: {livro['Número de Páginas']}")
+    print("Autores:", ", ".join(livro['Autores']))  
+    print("-" * 50)
+
+def buscar_livro_por_isbn(livros, isbn):
+    return next((livro for livro in livros if livro['ISBN'] == isbn), None)  # Corrigido para 'ISBN'
+
+def listar_livros(livros):
+    while True:
+        print("\nListar Livros:")
+        print("1. Listar todos os livros")
+        print("2. Buscar livro específico")
+        print("3. Voltar")
+        
+        try:
+            opcao = int(input("\nEscolha uma opção: "))
+            
+            if opcao == 1:
+                if not livros:
+                    print("Nenhum livro cadastrado!")
+                    return
+                
+                for i, livro in enumerate(livros, 1):
+                    print(f"\nLivro {i}:")
+                    mostrar_livros(livro)
+                    
+            elif opcao == 2:
+                if not livros:
+                    print("Nenhum livro cadastrado!")
+                    return
+                
+                isbn = input("Digite o ISBN do livro: ")
+                livro = buscar_livro_por_isbn(livros, isbn)
+                if livro:
+                    mostrar_livros(livro)
+                else:
+                    print("Livro não encontrado!")
+                    
+            elif opcao == 3:
+                return
+            else:
+                print("Opção inválida!")
+                
+        except ValueError:
+            print("Por favor, digite um número válido!")
+
+def menu_livros(livros):
+    while True:
+        print("\nMenu de Livros:")
+        print("1. Ver lista de livros")
+        print("2. Editar livros")
+        print("3. Criar um novo livro")
+        print("4. Deletar um livro")
+        print("5. Voltar")
+        print("6. Sair do Programa")
+        
+        try:
+            opcao = int(input("\nEscolha uma opção: "))
+
+            if opcao == 1:
+                listar_livros(livros)
+            elif opcao == 2:
+                editar_livros(livros)
+            elif opcao == 3:
+                criar_livros(livros)
+            elif opcao == 4:
+                excluir_livros(livros)
+            elif opcao == 5:
+                return True
+            elif opcao == 6:
+                return False
+            else:
+                print("Opção inválida!")
+        except ValueError:
+            print("Por favor, digite um número válido!")
+
+def menu_principal(usuarios, livros):
     while True:
         print("\nMenu Principal:")
         print("1. Usuários")
@@ -290,7 +490,8 @@ def menu_principal(usuarios):
                 if not menu_usuario(usuarios):
                     break
             elif opcao == 2:
-                print("Este serviço não está disponível!")
+                if not menu_livros(livros):
+                    break
             elif opcao == 3:
                 print("Este serviço não está disponível!")
             elif opcao == 4:
@@ -332,7 +533,35 @@ def main():
         {"nome": "Alice Xavier", "endereco": "Rua Gabriel Monteiro da Silva", "numero": "717", "cep": "07026-250", "data_nasc": "22/12/1984", "profissao": "Dentista", "cpf": "543.210.987-25", "email": "alice.xavier.odonto@sorrisomail.com.br"}
     ]
     
-    menu_principal(usuarios)
+    livros = [
+        {"ISBN": "978-3-16-148410-0", "Título": "O Último Dragão de Fogo", "Gênero": "Fantasia Épica", "Autores": ["Elara Vance"], "Número de Páginas": 450},
+        {"ISBN": "978-1-23-456789-7", "Título": "Sombras de Neon", "Gênero": "Cyberpunk Noir", "Autores": ["Kenji Tanaka", "Sarah Miller"], "Número de Páginas": 320},
+        {"ISBN": "979-8-76-543210-9", "Título": "O Jardim Secreto dos Sussurros", "Gênero": "Realismo Mágico", "Autores": ["Isabella Rossi"], "Número de Páginas": 288},
+        {"ISBN": "978-0-55-216650-3", "Título": "Crônicas do Tempo Perdido", "Gênero": "Ficção Científica", "Autores": ["Dr. Aris Thorne"], "Número de Páginas": 512},
+        {"ISBN": "978-8-53-330227-5", "Título": "A Receita da Felicidade Eterna", "Gênero": "Autoajuda", "Autores": ["Sofia Almeida"], "Número de Páginas": 190},
+        {"ISBN": "978-9-87-654321-0", "Título": "Mistério na Rua das Magnólias", "Gênero": "Suspense Policial", "Autores": ["Ricardo Barros"], "Número de Páginas": 350},
+        {"ISBN": "978-2-07-036002-4", "Título": "O Coração da Selva Esquecida", "Gênero": "Aventura", "Autores": ["Leo Fernandez"], "Número de Páginas": 270},
+        {"ISBN": "978-3-44-226778-7", "Título": "Entre Estrelas e Poeira Cósmica", "Gênero": "Space Opera", "Autores": ["Capitã Eva Rostova"], "Número de Páginas": 600},
+        {"ISBN": "978-0-74-327356-5", "Título": "A Melodia Silenciosa da Alma", "Gênero": "Romance Contemporâneo", "Autores": ["Clara Mendes"], "Número de Páginas": 310},
+        {"ISBN": "978-9-72-004384-8", "Título": "Histórias Não Contadas da Velha Vila", "Gênero": "Contos", "Autores": ["Antônio Pereira", "Júlia Silva"], "Número de Páginas": 215},
+        {"ISBN": "978-0-14-103614-4", "Título": "O Código do Infinito", "Gênero": "Thriller Tecnológico", "Autores": ["Maximus Byte"], "Número de Páginas": 420},
+        {"ISBN": "978-8-80-616040-8", "Título": "A Arte de Desaprender", "Gênero": "Filosofia", "Autores": ["Professor Kael"], "Número de Páginas": 180},
+        {"ISBN": "978-1-85-326000-7", "Título": "Lendas do Reino Submerso", "Gênero": "Mitologia", "Autores": ["Marina Aguas"], "Número de Páginas": 390},
+        {"ISBN": "978-0-30-759400-9", "Título": "O Segredo da Rosa Escarlate", "Gênero": "Romance Histórico", "Autores": ["Lady Annelise Beaumont"], "Número de Páginas": 480},
+        {"ISBN": "978-4-08-874878-6", "Título": "A Jornada do Pequeno Samurai", "Gênero": "Infantojuvenil", "Autores": ["Yuki Sato"], "Número de Páginas": 150},
+        {"ISBN": "978-0-67-973577-9", "Título": "Teoria Quântica para Céticos", "Gênero": "Divulgação Científica", "Autores": ["Dr. Elara Chen"], "Número de Páginas": 250},
+        {"ISBN": "978-3-59-617892-9", "Título": "O Enigma da Mansão Abandonada", "Gênero": "Terror Gótico", "Autores": ["Victor Blackwood"], "Número de Páginas": 333},
+        {"ISBN": "978-9-50-071290-1", "Título": "A Cozinha Afetiva da Vovó", "Gênero": "Culinária", "Autores": ["Nona Emilia"], "Número de Páginas": 170},
+        {"ISBN": "978-0-45-152493-5", "Título": "Revolução nas Estrelas Distantes", "Gênero": "Ficção Científica Militar", "Autores": ["General Rex"], "Número de Páginas": 550},
+        {"ISBN": "978-8-57-542788-6", "Título": "Poemas ao Luar", "Gênero": "Poesia", "Autores": ["Luna Seraphina"], "Número de Páginas": 120},
+        {"ISBN": "978-1-40-007917-9", "Título": "A Sombra do Imperador Caído", "Gênero": "Fantasia Sombria", "Autores": ["Kaelen Morek"], "Número de Páginas": 410},
+        {"ISBN": "978-0-31-262273-1", "Título": "Verdades Escondidas na Névoa", "Gênero": "Thriller Psicológico", "Autores": ["Dr. Evelyn Reed"], "Número de Páginas": 375},
+        {"ISBN": "978-6-07-070849-5", "Título": "O Mapa dos Sonhos Perdidos", "Gênero": "Aventura Fantástica", "Autores": ["Marco Viajante"], "Número de Páginas": 305},
+        {"ISBN": "978-1-59-307770-6", "Título": "Manual do Jovem Empreendedor", "Gênero": "Negócios", "Autores": ["Carlos Visionário", "Ana Prática"], "Número de Páginas": 200},
+        {"ISBN": "978-0-81-299583-9", "Título": "A Última Canção da Floresta", "Gênero": "Realismo Fantástico", "Autores": ["Iara Verde"], "Número de Páginas": 260}
+    ]
+    
+    menu_principal(usuarios, livros)
     salvar_usuarios(usuarios)
 
 if __name__ == "__main__":
