@@ -17,4 +17,3 @@ def menu_principal():
     else:
         print("Enserrando o programa!")
 
-menu_principal()
