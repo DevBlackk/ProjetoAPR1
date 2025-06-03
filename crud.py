@@ -21,8 +21,9 @@ def submenuUsuarios():
             print('Exibindo usuários...')
             lerUsuarios(usuarios)
         elif opcao == '2':
+            cpf = print(f'Digite o CPF do usuárop que deseja consultar:')
             print('Consultando usuário...')
-            #Função
+            #função
         elif opcao == '3':
             print('Criando novo cadastro...')
             #função
@@ -55,6 +56,37 @@ def lerUsuarios(usuarios):
             Profissão: {dados["profissao"]}
             ''')
 
-
- 
-    
+def criarUsuario(dicionario):
+    quant = int(input('Digite a quantidade de usuários que deseja cadastrar:'))
+    for i in range(quant):
+        cpf = input(f'Digite o cpf do usuario {i}:')
+        #chamar função que verifica se há cpf duplicado
+        nome = input(f'Digite o nome do usuário {i}:')
+        rua = input(f'Digite o nome da rua do usuário {i}:')
+        nro = input(f'Digite o número da casa do usuário {i}:')
+        cep = input(f'Digite o CEP do usuário {i}:')
+        nasc = input(f'Digite a data de nascimento do usuário {i} (dd/mm/yy):').replace('/', '')
+        profissao = input(f'Digite a profissão do usuário {i}:')
+        tel = []
+        emails = []
+        quant_tel = int(input('Digite quantos telefones deseja adicionar:'))
+        for j in range(quant_tel):
+            fone = input(f'Digite o telefone {j}:')
+            tel.append(fone)
+        quant_email = int(input('Digite quantos e-mails deseja adicionar:'))
+        for j in range(quant_email):
+            email = input(f'Digite o email {j} (ex:name@email.com):')
+            emails.append(email)
+        dados ={
+            'cpf': cpf,
+            'nome': nome,
+            'rua': rua,
+            'numero': nro,
+            'cep': cep,
+            'nascimento': nasc,
+            'emails': emails,
+            'telefones': tel,
+            'profissao': profissao
+        }
+        chave = f'usuario{len(dicionario) + 1}'
+        dicionario[chave] = dados
