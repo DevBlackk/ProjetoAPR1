@@ -1,5 +1,6 @@
 ### Manipulação de arquivos
 import datetime
+import os
 
 usuarios = [
     {"nome": "Camila Alves", "endereco": "Rua das Acácias", "numero": "101", "cep": "01002-010", "data_nasc": "10/05/1990", "profissao": "Arquiteta", "cpf": "111.222.333-01", "email": "camila.alves@emailficticio.com.br"},
@@ -66,16 +67,43 @@ def calcular_idade(usuario):
 def filtro_idade(usuarios):
     idade_minima = int(input("Digite a idade minima para filtrar: "))
     usuarios_filtrados = []
+    resultado = f"\nUsúarios com mais de {idade_minima} anos:\n"
+    
     for usuario in usuarios:
         idade = calcular_idade(usuario)
-
+        
         if idade > idade_minima:
             usuarios_filtrados.append(usuario)
-
+    
     if usuarios_filtrados:
-        print(f"\nUsúarios com mais de {idade_minima} anos:")
         for usuario in usuarios_filtrados:
-            print("\n-------------------")
+            resultado += "\n-------------------\n"
             for chave, valor in usuario.items():
-                print(f"{chave}: {valor}")
+                resultado += f"{chave}: {valor}\n"
+    else:
+        resultado += "\nNenhum usuário encontrado com o critério especificado."
+    
+    return resultado
 
+def gravar_filtro_idade_usuario():
+    nome_arquivo = "relatorio_filtro_idade_usuario.txt"
+    
+    # Verifica se o arquivo existe
+    if os.path.exists(nome_arquivo):
+        verificando = True
+        while verificando:
+            resposta = input(f"O arquivo {nome_arquivo} já existe. Deseja sobrescrevê-lo? (s/n): ").lower()
+            if resposta in ['s', 'n']:
+                if resposta == 'n':
+                    print("Operação cancelada.")
+                    return
+                verificando = False
+            print("Por favor, responda com 's' para sim ou 'n' para não.")
+    
+    # Se chegou aqui, ou o arquivo não existe ou o usuário quer sobrescrever
+    with open(nome_arquivo, "w", encoding='utf-8') as arquivo_usuario:
+        dados_filtro_usuario = filtro_idade(usuarios)
+        arquivo_usuario.write(dados_filtro_usuario)
+        print(f"Dados gravados com sucesso em {nome_arquivo}")
+
+gravar_filtro_idade_usuario()
