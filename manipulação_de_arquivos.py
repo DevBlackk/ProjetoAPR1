@@ -63,3 +63,19 @@ def calcular_idade(usuario):
     ano_nasc = data_nasc.split('/')
     return int(data_atual) - int(ano_nasc[2])
 
+def filtro_idade(usuarios):
+    idade_minima = int(input("Digite a idade minima para filtrar: "))
+    usuarios_filtrados = []
+    for usuario in usuarios:
+        idade = calcular_idade(usuario)
+
+        if idade > idade_minima:
+            usuarios_filtrados.append(usuario)
+
+    if usuarios_filtrados:
+        print(f"\nUsúarios com mais de {idade_minima} anos:")
+        for usuario in usuarios_filtrados:
+            print("\n-------------------")
+            for chave, valor in usuario.items():
+                print(f"{chave}: {valor}")
+
