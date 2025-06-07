@@ -9,28 +9,6 @@ import os
 import time
 import datetime
 
-usuarios = [
-    {"nome": "Camila Alves", "endereco": "Rua das Acácias", "numero": "101", "cep": "01002-010", "data_nasc": "10/05/1990", "profissao": "Arquiteta", "cpf": "111.222.333-01", "email": "camila.alves@emailficticio.com.br"},
-    {"nome": "Bruno Costa", "endereco": "Avenida Ipiranga", "numero": "202", "cep": "02003-020", "data_nasc": "25/08/1982", "profissao": "Contador", "cpf": "222.333.444-02", "email": "bruno.costa82@meuemail.com"},
-    {"nome": "Larissa Dias", "endereco": "Travessa dos Lírios", "numero": "30", "cep": "03004-030", "data_nasc": "12/01/1995", "profissao": "Psicóloga", "cpf": "333.444.555-03", "email": "lari.dias.psi@emailseguro.net"},
-    {"nome": "Rodrigo Ferreira", "endereco": "Alameda das Gardênias", "numero": "404", "cep": "04005-040", "data_nasc": "03/11/1979", "profissao": "Jornalista", "cpf": "444.555.666-04", "email": "rodrigo.ferreira.jorn@provedorexemplo.com"},
-    {"nome": "Sofia Gomes", "endereco": "Rua dos Girassóis", "numero": "505", "cep": "05006-050", "data_nasc": "18/07/2001", "profissao": "Estudante", "cpf": "555.666.777-05", "email": "sofia.g2001@emailuniversitario.edu.br"},
-    {"nome": "Thiago Lima", "endereco": "Avenida Rebouças", "numero": "606", "cep": "06007-060", "data_nasc": "29/04/1988", "profissao": "Desenvolvedor Web", "cpf": "666.777.888-06", "email": "thiago.dev@webmailficticio.com"},
-    {"nome": "Gabriela Martins", "endereco": "Praça Roosevelt", "numero": "70", "cep": "07008-070", "data_nasc": "07/09/1993", "profissao": "Publicitária", "cpf": "777.888.999-07", "email": "gabi.martins.publi@emailcriativo.com.br"},
-    {"nome": "Alice Xavier", "endereco": "Rua Gabriel Monteiro da Silva", "numero": "717", "cep": "07026-250", "data_nasc": "22/12/1984", "profissao": "Dentista", "cpf": "543.210.987-25", "email": "alice.xavier.odonto@sorrisomail.com.br"}
-]
-
-livros = [
-    {"ISBN": "978-3-16-148410-0", "Título": "O Último Dragão de Fogo", "Gênero": "Fantasia Épica", "Autores": ["Elara Vance"], "Número de Páginas": 450},
-    {"ISBN": "978-1-23-456789-7", "Título": "Sombras de Neon", "Gênero": "Cyberpunk Noir", "Autores": ["Kenji Tanaka", "Sarah Miller"], "Número de Páginas": 320},
-    {"ISBN": "979-8-76-543210-9", "Título": "O Jardim Secreto dos Sussurros", "Gênero": "Realismo Mágico", "Autores": ["Isabella Rossi"], "Número de Páginas": 288},
-    {"ISBN": "978-0-55-216650-3", "Título": "Crônicas do Tempo Perdido", "Gênero": "Ficção Científica", "Autores": ["Dr. Aris Thorne"], "Número de Páginas": 512},
-    {"ISBN": "978-8-53-330227-5", "Título": "A Receita da Felicidade Eterna", "Gênero": "Autoajuda", "Autores": ["Sofia Almeida"], "Número de Páginas": 190},
-    {"ISBN": "978-9-87-654321-0", "Título": "Mistério na Rua das Magnólias", "Gênero": "Suspense Policial", "Autores": ["Ricardo Barros"], "Número de Páginas": 350},
-    {"ISBN": "978-2-07-036002-4", "Título": "O Coração da Selva Esquecida", "Gênero": "Aventura", "Autores": ["Leo Fernandez"], "Número de Páginas": 270},
-    {"ISBN": "978-3-44-226778-7", "Título": "Entre Estrelas e Poeira Cósmica", "Gênero": "Space Opera", "Autores": ["Capitã Eva Rostova"], "Número de Páginas": 600},
-]
-
 def submenuUsuarios():
     usuarios = {'usuario1':{"cpf" : '23456', 'nome': 'joao'}, 'usuario2': {'cpf': '56789', 'nome': 'joana' }}
     print(f'\n Submenu Usuários:')
@@ -64,7 +42,7 @@ def submenuUsuarios():
         else:
             #Menu principal()
             continuar = False
-   
+
 def lerUsuarios(usuarios):
     if len(usuarios) == 0:
         print('Não há usuarios para exibir!')
@@ -121,13 +99,73 @@ def criarUsuario(dicionario):
 
 def sub_menu_livro():
     print("#=====Menu de Livros=====")
-    print("1. Adicionar livro")
-    print()
-    print()
-    print()
-    print()
-    print()
-    print()
+    print("1. Exibir Todos os Livros")
+    print("2. Adicionar Livro")
+    print("3. Editar Livro")
+    print("4. Buscar Livro")
+    print("5. Excluir Livro")
+    print("6. Voltar")
+
+
+livros = {
+    '978-85-359-0277-2': {
+        "TITULO": "Dom Casmurro",
+        "GENERO": "Romance",
+        "NUMERO_PAGS": 256,
+        "AUTORES": ["Machado de Assis"] # Uma lista de autores
+    },
+    '978-0-7653-2635-5': {
+        "TITULO": "O Nome do Vento",
+        "GENERO": "Fantasia",
+        "NUMERO_PAGS": 662,
+        "AUTORES": ["Patrick Rothfuss"]
+    },
+    '978-0-13-468599-1': {
+        "TITULO": "Effective Modern C++",
+        "GENERO": "Técnico",
+        "NUMERO_PAGS": 336,
+        "AUTORES": ["Scott Meyers"]
+    }
+}
+
+
+def adicionar_livro(list_livro):
+    autores = []
+
+    livro = {
+        input("Digite o titulo do livro: "): {
+            'ISBN': input("Digite o ISBN do livro (999-9-99-999999-9): "),
+            'GENERO': input("Digite o gênero do livro: "),
+            'AUTORES': autores,
+            'NUMERO_PAGS': int(input("Digite no número de paginas: "))
+        }
+    }
+    autor = input("Digite o nome do autor: ")
+    autores.append(autor)
+
+    list_livro = livro
+
+    return print(livro, list_livro)
+
+def exibir_livros(livros):
+    if not livros:
+        print("Não há livros pra exibir!")
+        return False
+    print("===== Catalogo de FIlmes =====\n")
+    for titulo, dados in livros.items():
+        print("-" * 20)
+        print(
+            f"ISBN: {titulo}",
+            f"\nTITULO: {dados.get("TITULO")}",
+            f"\nGÊNERO: {dados.get("GENERO")}",
+            f"\nPAGINAS: {dados.get("NUMERO_PAGS")}",
+        )
+
+        autores = dados.get("AUTORES", [])
+        if autores:
+            print(f"AUTOR(ES): {", ".join(autores)}")
+
+        print("-" * 20)
 
 ####### Manioulação de Arquivo/Relatorio ######
 def calcular_idade(usuario):
@@ -138,10 +176,8 @@ def calcular_idade(usuario):
 
 
 def limpar_terminal():
-    # Para Windows
     if os.name == 'nt':
         os.system('cls')
-    # Para Mac e Linux
     else:
         os.system('clear')
 
@@ -201,6 +237,6 @@ def gravar_filtro_idade_usuario():
         time.sleep(2)
         limpar_terminal()
 
-
+exibir_livros(livros)
 gravar_filtro_idade_usuario()
 ler_arquivo()
