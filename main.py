@@ -10,7 +10,6 @@ import time
 import datetime
 
 def submenuUsuarios():
-    usuarios = {'usuario1':{"cpf" : '23456', 'nome': 'joao'}, 'usuario2': {'cpf': '56789', 'nome': 'joana' }}
     print(f'\n Submenu Usuários:')
     print('1 - Exibir Todos')
     print('2 - Consultar Usuário')
@@ -19,29 +18,35 @@ def submenuUsuarios():
     print('5 - Excluir Cadastro')
     print('0 - Voltar ao Menu Principal')
     opcao = input('Escolha uma opção:')
-    continuar = True
-    while continuar: #repetir o menu até o usuário sair
-        if opcao == '1':
-            print('Exibindo usuários...')
-            lerUsuarios(usuarios)
-        elif opcao == '2':
-            cpf = print(f'Digite o CPF do usuárop que deseja consultar:')
-            print('Consultando usuário...')
-            #função
-        elif opcao == '3':
-            print('Criando novo cadastro...')
-            #função
-        elif opcao == '4':
-            cpf = input('Digite o CPF do usuário que deseja editar:')
-            print('Editando Usuário...')
-            #função
-        elif opcao == '5':
-            cpf = input('Digite o CPF do usuário que deseja excluir')
-            print('Excluindo usuário...')
-            #função
-        else:
-            #Menu principal()
-            continuar = False
+    return opcao
+def submenuLivros():
+    print(f'\n Submenu  de Livros:')
+    print('1 - Exibir Todos')
+    print('2 - Consultar Livro')
+    print('3 - Cadastrar Novo Livro')
+    print('4 - Alterar Livro')
+    print('5 - Excluir Livro')
+    print('0 - Voltar ao Menu Principal')
+    opcao = input('Escolha uma opção:')
+    return opcao
+def submenuEmprestimos():
+    print(f'\n Submenu de Empréstimos:')
+    print('1 - Exibir Todos')
+    print('2 - Consultar Empréstimo')
+    print('3 - Cadastrar Novo Empréstimo')
+    print('4 - Alterar Empréstimo')
+    print('5 - Excluir Empréstimo')
+    print('0 - Voltar ao Menu Principal')
+    opcao = input('Escolha uma opção:')
+    return opcao
+def submenuRelatórios():
+    print(f'\n Submenu de Relátorios:')
+    print('1 - Listar todos os dados de todos os usuários com mais de X anos de idade')
+    print('2 - Listar todos os dados de todos os livros que tenham mais do que X autores')
+    print('3 - Listar empréstimos realizados entre dd/mm/aaaa e dd/mm/aaaa')
+    print('0 - Voltar ao Menu Principal')
+    opcao = input('Escolha uma opção:')
+    return opcao
 
 def lerUsuarios(usuarios):
     if len(usuarios) == 0:
