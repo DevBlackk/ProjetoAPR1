@@ -9,6 +9,15 @@ import os
 import time
 import datetime
 
+def menu():
+    print('Menu de opções:')
+    print('1 - Submenu de Usuários.')
+    print('2 - Submenu de Livros.')
+    print('3 - Submenu de Empréstimos.')
+    print('4 - Submenu Relatórios.')
+    print('Digite 0 para encerrar o programa.')
+    opcao = input('Escolha uma opção:')
+    return opcao
 def submenuUsuarios():
     print(f'\n Submenu Usuários:')
     print('1 - Exibir Todos')
