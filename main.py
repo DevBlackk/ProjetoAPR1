@@ -160,7 +160,7 @@ def editNasc(usuarios,cpf):
 def editProfissao(usuarios,cpf):
     profissao = input('Digite a nova profissão do usuário:')
     usuarios[cpf][7] = profissao
-def maineditUser(usuarios, cpf):
+def mainEditUser(usuarios, cpf):
     try:
         opc = menuEditUser(usuarios,cpf)
         if opc == '1':
@@ -202,28 +202,24 @@ def maineditUser(usuarios, cpf):
             submenuUsuarios()
     except:
         print('Escolha uma opção válida')
-def mainUsuários(usuarios):
-    opc = submenuUsuarios()
-    if opc ==1 :
-        print('Exibindo todos os usuários...')
-        #chamar fução exibir todos
-    elif opc == 2:
-        print('Consultando usuário...')
-        #chamar função de consultar usuario
-    elif opc ==3:
-        cpf = input('Informe o CPF que deseja cadastrar:')
-        registerUser(usuarios, cpf)
-    elif opc == 4:
-        cpf = input('Informe o CPF que deseja editar:')
-        maineditUser(usuarios, cpf)
-    elif opc == 5:
-        cpf = input('Digite o CPF que deseja excluir:')
-        deleteUser(usuarios, cpf)
-    elif opc == 0:
-        menu()
-cpf = '07854736103'
 
-mainUsuários(usuarios)
+def listarUsuarios(usuarios):
+    if len(usuarios) > 0:
+        for i in usuarios.keys():
+            print(f'CPF: {i}')
+            print(f'Nome:{usuarios[i][0]} ')
+            print(f'Rua: {usuarios[i][1]}')
+            print(f'Número: {usuarios[i][2]}')
+            print(f'CEP: {usuarios[i][3]}')
+            print(f'E-mails:')
+            for j in range(len(usuarios[i][4])):
+                print(usuarios[i][4][j])
+            for j in range(len(usuarios[i][4])):
+                print(usuarios[i][5][j])
+            print(f'Data de Nascimento: {usuarios[i][6]}')
+            print(f'Profissão: {usuarios[i][7]}')
+    else:
+        print('Lista de Usuários Vazia')
 #######Livros#######
 livros = {
     'Effective Modern C++': [
