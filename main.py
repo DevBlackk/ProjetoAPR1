@@ -198,11 +198,28 @@ def maineditUser(usuarios, cpf):
             submenuUsuarios()
     except:
         print('Escolha uma opção válida')
-
-        
+def mainUsuários(usuarios):
+    opc = submenuUsuarios()
+    if opc ==1 :
+        print('Exibindo todos os usuários...')
+        #chamar fução exibir todos
+    elif opc == 2:
+        print('Consultando usuário...')
+        #chamar função de consultar usuario
+    elif opc ==3:
+        cpf = input('Informe o CPF que deseja cadastrar:')
+        registerUser(usuarios, cpf)
+    elif opc == 4:
+        cpf = input('Informe o CPF que deseja editar:')
+        maineditUser(usuarios, cpf)
+    elif opc == 5:
+        cpf = input('Digite o CPF que deseja excluir:')
+        deleteUser(usuarios, cpf)
+    elif opc == 0:
+        menu()
 cpf = '07854736103'
-editEmail(usuarios, cpf)
-editTelefone(usuarios, cpf)
+
+mainUsuários(usuarios)
 #######Livros#######
 
 def sub_menu_livro():
