@@ -55,7 +55,7 @@ usuarios = {
     '07854736103' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao'],
     '91325994120' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao']
 }
-def cadastrarUsuario(usuarios, cpf):
+def registerUser(usuarios, cpf):
     if cpf in usuarios:
         print('cpf ja cadastrado!')
         return False
@@ -87,8 +87,56 @@ def cadastrarUsuario(usuarios, cpf):
         dados.append(profissao)
         usuarios[cpf] = dados
         return True
-#######Livros#######
+def deleteUser(usuarios, cpf):
+    if cpf in usuarios:
+        del usuarios[cpf]
+        return True
+    else:
+        print('CPF não cadastrado.')
+        return False
+def editUser(usuarios, cpf):
+    if cpf in usuarios:
+        print('1 - Alterar Nome do Usuário')
+        print('2 - Alterar Rua do Usuário')
+        print('3 - Alterar Número do Usuário')
+        print('4 - Alterar CEP do Usuário')
+        print('5 - Alterar E-mails do Usuário')
+        print('6 - Alterar Telefones do Usuário') 
+        print('7 - Alterar Data de Nascimento do Usuário')
+        print('8 - Alterar Profissão do Usuário')
+        print('0 - Voltar')
+        opc = input('Escolha uma opção:')
+        return opc
+    else:
+        print('CPF não cadastrado.')
+def editName(usuarios, cpf):
+    nome = input('Informe o novo nome do usuário:')
+    usuarios[cpf][0] = nome
+def editRua(usuarios, cpf):
+    rua = input('Informa a nova rua do usuário:')
+    usuarios[cpf][1] = rua
+def editNro(usuarios, cpf):
+    nro = input('Digite o novo número da casa do usuário:')
+    usuarios[cpf][2] = nro
+def editCep(usuarios, cpf):
+    cep = input('Digite o novo CEP do usuário:')
+    usuarios[cpf][3] = cep
+def editEmail(usuarios, cpf):
+    email = input('Digite o email que deseja alterar:')
+    novo_email = input('Digite o novo email:')
+    pos = -1
+    for i in range(len(usuarios[cpf][4])):
+        if usuarios[cpf][4][i] == email:
+            pos = i
+    if pos >= 0:
+        usuarios[cpf][4][pos] = novo_email
+    else:
+        print('Não foi possível encontrar o email.')        
 
+cpf = '07854736103'
+editRua(usuarios, cpf)
+#######Livros#######
+'''
 def sub_menu_livro():
     print("#=====Menu de Livros=====")
     print("1. Exibir Todos os Livros")
@@ -325,4 +373,4 @@ def gravar_filtro_idade_usuario(usuarios):
         arquivo_usuario.write(dados_filtro_usuario)
         print(f"Dados gravados com sucesso em {nome_arquivo}")
         time.sleep(2)
-        limpar_terminal()
+        limpar_terminal()'''
