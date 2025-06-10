@@ -113,7 +113,7 @@ def editName(usuarios, cpf):
     nome = input('Informe o novo nome do usuário:')
     usuarios[cpf][0] = nome
 def editRua(usuarios, cpf):
-    rua = input('Informa a nova rua do usuário:')
+    rua = input('Informe a nova rua do usuário:')
     usuarios[cpf][1] = rua
 def editNro(usuarios, cpf):
     nro = input('Digite o novo número da casa do usuário:')
@@ -123,18 +123,32 @@ def editCep(usuarios, cpf):
     usuarios[cpf][3] = cep
 def editEmail(usuarios, cpf):
     email = input('Digite o email que deseja alterar:')
-    novo_email = input('Digite o novo email:')
+    novo_email = input('Digite o email alterado:')
     pos = -1
     for i in range(len(usuarios[cpf][4])):
         if usuarios[cpf][4][i] == email:
             pos = i
     if pos >= 0:
         usuarios[cpf][4][pos] = novo_email
+        print()
+        return True
     else:
-        print('Não foi possível encontrar o email.')        
-
+        return False
+def editTelefone(usuarios, cpf):
+    tel = input('Digite o telefone que deseja alterar:')
+    novo_tel = input('Digite o telefone alterado:')
+    pos = -1
+    for i in range(len(usuarios[cpf][5])):
+        if usuarios[cpf][5][i] == tel:
+            pos = i
+    if pos >=0:
+        usuarios[cpf][5][pos] = novo_tel
+        return True
+    else:
+        return False
 cpf = '07854736103'
-editRua(usuarios, cpf)
+editEmail(usuarios, cpf)
+editTelefone(usuarios, cpf)
 #######Livros#######
 
 def sub_menu_livro():
@@ -221,4 +235,4 @@ def gravar_filtro_idade_usuario(usuarios):
         arquivo_usuario.write(dados_filtro_usuario)
         print(f"Dados gravados com sucesso em {nome_arquivo}")
         time.sleep(2)
-        limpar_terminal()'''
+        limpar_terminal()
