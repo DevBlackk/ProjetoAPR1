@@ -1,16 +1,13 @@
-'''
-Cada Submenu deverá oferecer as opções: Listar todos, Listar um elemento específico
-do conjunto, Incluir (sem repetição), Alterar e Excluir (após confirmação dos dados) um
-elemento do conjunto. Observe que os atributos que estão no plural indicam que deverá ser
-possível incluir vários itens daquele mesmo atributo
-
-'''
-import os
-import time
-import datetime
-
+def menu():
+    print('Menu de opções:')
+    print('1 - Submenu de Usuários.')
+    print('2 - Submenu de Livros.')
+    print('3 - Submenu de Empréstimos.')
+    print('4 - Submenu Relatórios.')
+    print('Digite 0 para encerrar o programa.')
+    opcao = input('Escolha uma opção:')
+    return opcao
 def submenuUsuarios():
-    usuarios = {'usuario1':{"cpf" : '23456', 'nome': 'joao'}, 'usuario2': {'cpf': '56789', 'nome': 'joana' }}
     print(f'\n Submenu Usuários:')
     print('1 - Exibir Todos')
     print('2 - Consultar Usuário')
@@ -19,82 +16,77 @@ def submenuUsuarios():
     print('5 - Excluir Cadastro')
     print('0 - Voltar ao Menu Principal')
     opcao = input('Escolha uma opção:')
-    continuar = True
-    while continuar: #repetir o menu até o usuário sair
-        if opcao == '1':
-            print('Exibindo usuários...')
-            lerUsuarios(usuarios)
-        elif opcao == '2':
-            cpf = print(f'Digite o CPF do usuárop que deseja consultar:')
-            print('Consultando usuário...')
-            #função
-        elif opcao == '3':
-            print('Criando novo cadastro...')
-            #função
-        elif opcao == '4':
-            cpf = input('Digite o CPF do usuário que deseja editar:')
-            print('Editando Usuário...')
-            #função
-        elif opcao == '5':
-            cpf = input('Digite o CPF do usuário que deseja excluir')
-            print('Excluindo usuário...')
-            #função
-        else:
-            #Menu principal()
-            continuar = False
-
-def lerUsuarios(usuarios):
-    if len(usuarios) == 0:
-        print('Não há usuarios para exibir!')
+    return opcao
+def submenuLivros():
+    print(f'\n Submenu  de Livros:')
+    print('1 - Exibir Todos')
+    print('2 - Consultar Livro')
+    print('3 - Cadastrar Novo Livro')
+    print('4 - Alterar Livro')
+    print('5 - Excluir Livro')
+    print('0 - Voltar ao Menu Principal')
+    opcao = input('Escolha uma opção:')
+    return opcao
+def submenuEmprestimos():
+    print(f'\n Submenu de Empréstimos:')
+    print('1 - Exibir Todos')
+    print('2 - Consultar Empréstimo')
+    print('3 - Cadastrar Novo Empréstimo')
+    print('4 - Alterar Empréstimo')
+    print('5 - Excluir Empréstimo')
+    print('0 - Voltar ao Menu Principal')
+    opcao = input('Escolha uma opção:')
+    return opcao
+def submenuRelatórios():
+    print(f'\n Submenu de Relátorios:')
+    print('1 - Listar todos os dados de todos os usuários com mais de X anos de idade')
+    print('2 - Listar todos os dados de todos os livros que tenham mais do que X autores')
+    print('3 - Listar empréstimos realizados entre dd/mm/aaaa e dd/mm/aaaa')
+    print('0 - Voltar ao Menu Principal')
+    opcao = input('Escolha uma opção:')
+    return opcao
+def existe_arquivo(nome_arquivo):
+    import os
+    if os.path.exists(nome_arquivo):
+        return True
     else:
-        for chave, dados in usuarios.items():
-            print(f'''
-            {chave}:
-            CPF: {dados["cpf"]}
-            Nome: {dados["nome"]}
-            Rua: {dados["rua"]}, Número: {dados["nro"]}
-            CEP: {dados["cep"]}
-            E-mails: {(dados["emails"])}
-            Telefones: {(dados["telefones"])}
-            Data de Nascimento: {dados["data_nasc"]}
-            Profissão: {dados["profissao"]}
-            ''')
-
-def criarUsuario(dicionario):
-    quant = int(input('Digite a quantidade de usuários que deseja cadastrar:'))
-    for i in range(quant):
-        cpf = input(f'Digite o cpf do usuario {i}:')
-        #chamar função que verifica se há cpf duplicado
-        nome = input(f'Digite o nome do usuário {i}:')
-        rua = input(f'Digite o nome da rua do usuário {i}:')
-        nro = input(f'Digite o número da casa do usuário {i}:')
-        cep = input(f'Digite o CEP do usuário {i}:')
-        nasc = input(f'Digite a data de nascimento do usuário {i} (dd/mm/yy):').replace('/', '')
-        profissao = input(f'Digite a profissão do usuário {i}:')
-        tel = []
+        return False
+usuarios = {
+    '07854736103' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao'],
+    '91325994120' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao']
+}
+def cadastrarUsuario(usuarios, cpf):
+    if cpf in usuarios:
+        print('cpf ja cadastrado!')
+        return False
+    else:
         emails = []
-        quant_tel = int(input('Digite quantos telefones deseja adicionar:'))
-        for j in range(quant_tel):
-            fone = input(f'Digite o telefone {j}:')
-            tel.append(fone)
-        quant_email = int(input('Digite quantos e-mails deseja adicionar:'))
-        for j in range(quant_email):
-            email = input(f'Digite o email {j} (ex:name@email.com):')
-            emails.append(email)
-        dados ={
-            'cpf': cpf,
-            'nome': nome,
-            'rua': rua,
-            'numero': nro,
-            'cep': cep,
-            'nascimento': nasc,
-            'emails': emails,
-            'telefones': tel,
-            'profissao': profissao
-        }
-        chave = f'usuario{len(dicionario) + 1}'
-        dicionario[chave] = dados
-
+        telefones = []
+        dados = []
+        nome = input('Digite o nome do usuário:')
+        rua = input('Digite o a rua do usuário:')
+        nro = input('Digite o número da casa do usuário:')
+        cep = input('Digite o CEP do usuário:')
+        qtd = int(input('Quantos E-mails deseja adicionar?'))
+        for i in range(qtd):
+            mail = input(f'Digite o E-mail {i+1}')
+            emails.append(mail)
+        qtd2 = int(input('Digite quantos telefones deseja adicionar:'))
+        for i in range(qtd2):
+            tel = input(f'Digite o telefone {i}')
+            telefones.append(tel)
+        nasc = input('Digite a data de nascimento do usuário (dd/mm/aaaa):')
+        profissao = input('Digite a profissão do usuário:')
+        dados.append(nome)
+        dados.append(rua)
+        dados.append(nro)
+        dados.append(cep)
+        dados.append(emails)
+        dados.append(telefones)
+        dados.append(nasc)
+        dados.append(profissao)
+        usuarios[cpf] = dados
+        return True
 #######Livros#######
 livros = {
     '978-0-13-468599-1': [
@@ -169,6 +161,7 @@ def calcular_idade(usuario):
 
 
 def limpar_terminal():
+    import os
     if os.name == 'nt':
         os.system('cls')
     else:
