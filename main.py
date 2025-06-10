@@ -208,22 +208,133 @@ cpf = '07854736103'
 editEmail(usuarios, cpf)
 editTelefone(usuarios, cpf)
 #######Livros#######
+livros = {
+    'Effective Modern C++': [
+        '978-0-13-468599-1',
+        'Técnico',
+        336,
+        ['Scott Meyers']
+    ],
+    'O Nome do Vento': [
+        '978-0-7653-2635-5',
+        'Fantasia',
+        662,
+        ['Patrick Rothfuss']
+    ],
+    'Dom Casmurro': [
+        '978-85-359-0277-2',
+        'Romance',
+        256,
+        ['Machado de Assis']
+    ]
+}
 
-def sub_menu_livro():
-    print("#=====Menu de Livros=====")
-    print("1. Exibir Todos os Livros")
-    print("2. Adicionar Livro")
-    print("3. Editar Livro")
-    print("4. Buscar Livro")
-    print("5. Excluir Livro")
-    print("6. Voltar")
+def inserir_livro(livros):
+    nome_livro = input("Digite o nome do livro que deseje a adicionar: ")
+    if nome_livro in livros:
+        print("Livro já existente!")
+        return False
+    else:
+        livros[nome_livro] = []
 
-    op = input("Escolha uma opção: ")
-    if op == '1':
-        print("Adicionando livro...")
-        if inserir_livro(livros):
-            print("Livro adicionado com sucesso!")
+        isbn = input("Digite o ISBN do livro(999-99-999-9999-9): ")
+        livros[nome_livro].append(isbn)
 
+        genero = input("Digite o gênero do livro: ")
+        livros[nome_livro].append(genero)
+
+        autores = []
+        inserindo_atores = True
+        while inserindo_atores:
+            autor = input("Informe o nome dos autor(a): ")
+            if autor.lower() == 'sair':
+                inserindo_atores = False
+            else:
+                autores.append(autor)
+        livros[nome_livro].append(autores)
+
+        paginas = int(input("Digite o número de páginas do livro: "))
+        livros[nome_livro].append(paginas)
+        return True
+
+def deletar_livro(livros, nome_livro):
+    nome_livro = input("Digite o nome do livro que desaja excluir: ")
+    if nome_livro in livros:
+        del livros[nome_livro]
+        return True
+    else:
+        print("Livro não encontrado!")
+        return False
+
+def menu_editar_livro(livros, nome_livro):
+    nome_livro = input("Digite o nome do livro que deseja editar: ")
+    if nome_livro in livros:
+        print('1 - Alterar ISBN do Livro')
+        print('2 - Alterar Gênero do Livro')
+        print('3 - Alterar Autores do Livro')
+        print('4 - Alterar Número de paginas do Livro')
+        print('5 - Alterar Todos os Dados do Livro')
+        print('6 - Voltar')
+
+        op = input("Escolha uma opção: ")
+        return op
+    else:
+        print("Erro: por favor escolha uma das opções entre 1 e 6!")
+
+def editar_isbn(livros, nome_livro):
+    isbn = input("Digite o no ISBN para editar do livro: ")
+    livros[nome_livro][0] = isbn
+    return True
+
+def editar_genero(livros, nome_livro):
+    genero = input("Digite o novo gênero do livro: ")
+    livros[nome_livro][1] = genero
+    return True
+
+def editar_paginas(livvros, nome_livro):
+    pags = int(input("Digite o novo número de paginas que deseja editar: "))
+    livros[nome_livro][2] = pags
+
+def editar_autores(livros, nome_livro):
+    autor = input("Digite o nome autor(a) que deseja alterar: ")
+    novo_autor = input("Digite o novo nome do autor(a): ")
+
+    pos = 1
+    for i in range(len(livros[nome_livro][3])):
+        if livros[nome_livro][2][i] == autor:
+            pos = i
+    
+    if pos >= 0:
+        livros[nome_livro][2] = novo_autor
+        return True
+    else:
+        return False
+
+def main_menu_editar_livro(livros, nome_livro):
+    try:
+        op = menu_editar_livro(livros, nome_livro)
+
+        if op == '1':
+            editar_isbn(livros,nome_livro)
+        elif op == '2':
+            editar_genero(livros, nome_livro)
+        elif op == '3':
+            editar_paginas(livros, nome_livro)
+        elif op == '4':
+            editar_autores(livros, nome_livro)
+        elif op == '5':
+            print("Editando todos dados do livro...")
+            editar_isbn(livros, nome_livro)
+            editar_genero(livros, nome_livro)
+            editar_paginas(livros, nome_livro)
+            editar_autores(livros, nome_livro)
+        elif op == '7':
+            submenuLivros()
+    except:
+        print("Escolha uma opção válida!")
+
+
+    
 ####### Manipulação de Arquivo/Relatorio ######
 def calcular_idade(usuario):
     data_nasc = usuario["data_nasc"]
