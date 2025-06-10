@@ -90,14 +90,14 @@ def registerUser(usuarios, cpf):
         dados.append(profissao)
         usuarios[cpf] = dados
         return True
-def deleteUser(usuarios, cpf):
+def deleteUser(usuarios, cpf): 
     if cpf in usuarios:
         del usuarios[cpf]
         return True
     else:
         print('CPF não cadastrado.')
         return False
-def editUser(usuarios, cpf):
+def menuEditUser(usuarios, cpf):
     if cpf in usuarios:
         print('1 - Alterar Nome do Usuário')
         print('2 - Alterar Rua do Usuário')
@@ -107,6 +107,7 @@ def editUser(usuarios, cpf):
         print('6 - Alterar Telefones do Usuário') 
         print('7 - Alterar Data de Nascimento do Usuário')
         print('8 - Alterar Profissão do Usuário')
+        print('9 - Alterar TODOS os dados do Usuário')
         print('0 - Voltar')
         opc = input('Escolha uma opção:')
         return opc
@@ -149,6 +150,56 @@ def editTelefone(usuarios, cpf):
         return True
     else:
         return False
+def editNasc(usuarios,cpf):
+    nascimento = input('Digite a nova data de nascimento (dd/mm/aaaa) do usuário:')
+    usuarios[cpf][6] = nascimento
+def editProfissao(usuarios,cpf):
+    profissao = input('Digite a nova profissão do usuário:')
+    usuarios[cpf][7] = profissao
+def maineditUser(usuarios, cpf):
+    try:
+        opc = menuEditUser(usuarios,cpf)
+        if opc == '1':
+            editName(usuarios, cpf)
+            print('Nome alterado com sucesso.')
+        elif opc == '2':
+            editRua(usuarios, cpf)
+            print('Rua alterada com sucesso.')
+        elif opc == '3':
+            editNro(usuarios, cpf)
+            print('Número da casa alterado com sucesso.')
+        elif opc == '4':
+            editCep(usuarios, cpf)
+            print('CEP alterado com sucesso.')
+        elif opc == '5':
+            editEmail(usuarios, cpf)
+            print('E-mail(s) alterados com sucesso.')
+        elif opc == '6':
+            editTelefone(usuarios, cpf)
+            print('Telefone(s) alterados com sucesso.')
+        elif opc == '7':
+            editNasc(usuarios, cpf)
+            print('Data de nascimento alterada com sucesso.')
+        elif opc == '8':
+            editProfissao(usuarios, cpf)
+            print('Profissão alterada com sucesso')
+        elif opc == '9':
+            submenuUsuarios()
+            editRua(usuarios, cpf)
+            editNro(usuarios, cpf)
+            editCep(usuarios, cpf)
+            editEmail(usuarios, cpf)
+            editTelefone(usuarios, cpf)
+            editNasc(usuarios, cpf)
+            editProfissao(usuarios, cpf)
+            editName(usuarios, cpf)
+            print('Dados alterados com sucesso')
+        elif opc == '0':
+            submenuUsuarios()
+    except:
+        print('Escolha uma opção válida')
+
+        
 cpf = '07854736103'
 editEmail(usuarios, cpf)
 editTelefone(usuarios, cpf)
