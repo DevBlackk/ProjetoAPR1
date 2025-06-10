@@ -1,4 +1,8 @@
-import datetime
+
+
+from datetime import datetime
+import os
+import time
 
 
 def menu():
@@ -225,7 +229,7 @@ def gravar_filtro_idade_usuario(usuarios):
             if resposta in ['s', 'n']:
                 if resposta == 'n':
                     print("Operação cancelada.")
-                    time.sleep(2)
+                    datetime.time.sleep(2)
                     limpar_terminal()
                     return
                 verificando = False
@@ -239,3 +243,4 @@ def gravar_filtro_idade_usuario(usuarios):
         print(f"Dados gravados com sucesso em {nome_arquivo}")
         time.sleep(2)
         limpar_terminal()
+
