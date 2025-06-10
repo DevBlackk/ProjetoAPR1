@@ -203,10 +203,6 @@ def maineditUser(usuarios, cpf):
     except:
         print('Escolha uma opção válida')
 
-        
-cpf = '07854736103'
-editEmail(usuarios, cpf)
-editTelefone(usuarios, cpf)
 #######Livros#######
 livros = {
     'Effective Modern C++': [
@@ -315,13 +311,17 @@ def main_menu_editar_livro(livros, nome_livro):
         op = menu_editar_livro(livros, nome_livro)
 
         if op == '1':
+            print("Editando o ISBN do livro...")
             editar_isbn(livros,nome_livro)
         elif op == '2':
+            print("Editando o gênero do livro...")
             editar_genero(livros, nome_livro)
         elif op == '3':
-            editar_paginas(livros, nome_livro)
-        elif op == '4':
+            print("Editando os autores do livro...")
             editar_autores(livros, nome_livro)
+        elif op == '4':
+            print("Editando o número de paginas do livro...")
+            editar_paginas(livros, nome_livro)
         elif op == '5':
             print("Editando todos dados do livro...")
             editar_isbn(livros, nome_livro)
@@ -406,3 +406,4 @@ def gravar_filtro_idade_usuario(usuarios):
         time.sleep(2)
         limpar_terminal()
 
+main_menu_editar_livro(livros,"Dom Casmurro")
