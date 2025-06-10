@@ -1,3 +1,6 @@
+import datetime
+
+
 def menu():
     print('Menu de opções:')
     print('1 - Submenu de Usuários.')
