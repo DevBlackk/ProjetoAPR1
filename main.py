@@ -1,6 +1,5 @@
 
-
-from datetime import datetime
+import datetime
 import os
 import time
 
@@ -224,7 +223,7 @@ def listUsers(usuarios):
         print('Lista de Usuários Vazia')
 def listUser(usuarios, cpf):
     if cpf in usuarios:
-        print(f'CPF: {i}')
+        print(f'CPF: {cpf}')
         print(f'Nome:{usuarios[cpf][0]} ')
         print(f'Rua: {usuarios[cpf][1]}')
         print(f'Número: {usuarios[cpf][2]}')
@@ -298,7 +297,7 @@ def deletar_livro(livros, nome_livro):
         print("Livro não encontrado!")
         return False
 
-def menu_editar_livro(livros, nome_livro):
+def menu_editar_livro(livros):
     nome_livro = input("Digite o nome do livro que deseja editar: ")
     if nome_livro in livros:
         print('1 - Alterar ISBN do Livro')
@@ -344,7 +343,7 @@ def editar_autores(livros, nome_livro):
 
 def main_menu_editar_livro(livros, nome_livro):
     try:
-        op = menu_editar_livro(livros, nome_livro)
+        op = menu_editar_livro(livros)
 
         if op == '1':
             print("Editando o ISBN do livro...")
@@ -369,8 +368,111 @@ def main_menu_editar_livro(livros, nome_livro):
     except:
         print("Escolha uma opção válida!")
 
+#######Empréstimos#######
+emprestimos_por_cpf = {
+    "111.222.333-44": [
+        {
+            "isbn_livro": "978-85-359-0277-5", # Dom Casmurro
+            "data_retirada": "2025-05-10",
+            "data_devolucao": "2025-05-24", # Devolvido no prazo
+            "valor_multa_diaria": 0.50
+        },
+        {
+            "isbn_livro": "978-85-9807-827-2", # 1984
+            "data_retirada": "2025-05-15",
+            "data_devolucao": None, # Livro emprestado e já em atraso
+            "valor_multa_diaria": 1.00
+        }
+    ],
+    "222.333.444-55": [
+        {
+            "isbn_livro": "978-85-7164-588-9", # O Alquimista
+            "data_retirada": "2025-04-20",
+            "data_devolucao": "2025-05-15", # Devolvido com atraso
+            "valor_multa_diaria": 0.75
+        }
+    ],
+    "333.444.555-66": [
+        {
+            "isbn_livro": "978-85-7980-323-8", # A Culpa é das Estrelas
+            "data_retirada": "2025-06-01",
+            "data_devolucao": None, # Livro ainda emprestado, dentro do prazo
+            "valor_multa_diaria": 0.50
+        }
+    ],
+    "444.555.666-77": [
+        {
+            "isbn_livro": "978-0-7475-3274-3", # Harry Potter and the Philosopher's Stone
+            "data_retirada": "2025-03-01",
+            "data_devolucao": "2025-03-15", # Devolvido no prazo
+            "valor_multa_diaria": 0.50
+        }
+    ]
+}
 
+def inserir_emprestimo(emprestimos, usuarios, livros):
+    cpf_usuario = input("Informe o CPF do usúario: ")
+    if cpf_usuario not in usuarios:
+        print("Usuario não existente!")
+        return False
+    else:
+        emprestimos[cpf_usuario] = []
+
+        isbn_livro = input("Informe o ISBN do livro (999-99-999-9999-9): ")
+        if isbn_livro not in livros:
+            print("Livro não existente!")
+            return False
+        else:
+            emprestimos[cpf_usuario].append(isbn_livro)
+        
+        data_reterida = input("Digite a data de retirada (2000-02-02): ")
+        emprestimos[cpf_usuario].append(data_reterida)
+
+        data_devolucao = None
+        emprestimos[cpf_usuario].append(data_devolucao)
+
+
+        valor_multa_diaria = .50
+        emprestimos[cpf_usuario].append(valor_multa_diaria)
+        
+        return True
+
+def devolvido(emprestimos):
+    cpf_usuario = input("Digite o CPF do usuario: ")
+    if cpf_usuario in emprestimos:
+        if emprestimos[cpf_usuario][2] == None:
+            data_devolução = input("Digite o a data de dvolução do livro (2000-02-02): ")
+            emprestimos[cpf_usuario] = data_devolução
+            return True
+
+def deletar_emprestimo(emprestimos):
+    cpf_usuario = input("Digite o CPF do usúario: ")
+    if cpf_usuario in emprestimos:
+        del emprestimos[cpf_usuario]
+        return True
+    else:
+        print("Emprestimo não encontrado!")
+        return False
     
+def menu_editar_emprestimo(emprestimos, ):
+    cpf_usuario = input("Informe o CPF do usúario que desaja editar o empréstimos: ")
+    if cpf_usuario in emprestimos:
+        print("1 - Alterar ISBN do livro emprestado")
+        print("2 - Alterar data de retira do livro emprestado")
+        print("3 - Alterar data de devolução do livro eprestado")
+        print("4 - Alterar valor da multa diaria do livro emprestado")
+        print("5 - Sair")
+
+        op = input("Escolha uma opção: ")
+        return op
+    else:
+        print("Erro: por favor escolha uma das opções entre 1 e 6!")
+
+def editar_isbn_emprestimo(emprestimos, cpf_usuario):
+
+
+
+
 ####### Manipulação de Arquivo/Relatorio ######
 def calcular_idade(usuario):
     data_nasc = usuario["data_nasc"]
