@@ -342,30 +342,29 @@ def editar_autores(livros, nome_livro):
         return False
 
 def main_menu_editar_livro(livros, nome_livro):
-    try:
-        op = menu_editar_livro(livros)
+    op = menu_editar_livro(livros)
 
-        if op == '1':
-            print("Editando o ISBN do livro...")
-            editar_isbn(livros,nome_livro)
-        elif op == '2':
-            print("Editando o gênero do livro...")
-            editar_genero(livros, nome_livro)
-        elif op == '3':
-            print("Editando os autores do livro...")
-            editar_autores(livros, nome_livro)
-        elif op == '4':
-            print("Editando o número de paginas do livro...")
-            editar_paginas(livros, nome_livro)
-        elif op == '5':
-            print("Editando todos dados do livro...")
-            editar_isbn(livros, nome_livro)
-            editar_genero(livros, nome_livro)
-            editar_paginas(livros, nome_livro)
-            editar_autores(livros, nome_livro)
-        elif op == '7':
-            submenuLivros()
-    except:
+    if op == '1':
+        print("Editando o ISBN do livro...")
+        editar_isbn(livros,nome_livro)
+    elif op == '2':
+        print("Editando o gênero do livro...")
+        editar_genero(livros, nome_livro)
+    elif op == '3':
+        print("Editando os autores do livro...")
+        editar_autores(livros, nome_livro)
+    elif op == '4':
+        print("Editando o número de paginas do livro...")
+        editar_paginas(livros, nome_livro)
+    elif op == '5':
+        print("Editando todos dados do livro...")
+        editar_isbn(livros, nome_livro)
+        editar_genero(livros, nome_livro)
+        editar_paginas(livros, nome_livro)
+        editar_autores(livros, nome_livro)
+    elif op == '7':
+        submenuLivros()
+    else:
         print("Escolha uma opção válida!")
 
 #######Empréstimos#######
@@ -441,8 +440,6 @@ def devolvido(emprestimos):
     cpf_usuario = input("Digite o CPF do usuario: ")
     if cpf_usuario in emprestimos:
         if emprestimos[cpf_usuario][2] == None:
-            data_devolução = input("Digite o a data de dvolução do livro (2000-02-02): ")
-            emprestimos[cpf_usuario] = data_devolução
             return True
 
 def deletar_emprestimo(emprestimos):
@@ -469,17 +466,51 @@ def menu_editar_emprestimo(emprestimos, ):
         print("Erro: por favor escolha uma das opções entre 1 e 6!")
 
 def editar_isbn_emprestimo(emprestimos, cpf_usuario):
+    isbn = input("Insira o novo ISBN do livro que deseja do empréstimo: ")
+    emprestimos[cpf_usuario][0] = isbn
+    return True
 
+def editar_data_retirada(emprestimos, cpf_usuario):
+    data_retirada = input("Digite data que deseja atualizar: ")
+    emprestimos[cpf_usuario][1] = data_retirada
+    return True
 
+def editar_data_retida(emprestimos, cpf_usuario):
+    if devolvido(emprestimos):
+        data_devolução = input("Digite o a data de dvolução do livro (2000-02-02): ")
+        emprestimos[cpf_usuario][2] = data_devolução
+        return True
+    
+def editar_valor_multa(emprestimos, cpf_usuario):
+    valor_multa = int(input("Digite valor que deseja editar: "))
+    emprestimos[cpf_usuario][3] = valor_multa
+    return True
+
+def main_editar_livro(emprestimos, cpf_usuario):
+    op = menu_editar_emprestimo(emprestimos)
+
+    if op =='1':
+        print("Editando o ISBN do livro...")
+        editar_isbn_emprestimo(emprestimos, cpf_usuario)
+    elif op == '2':
+        print("Editado a data de retirada do livro emprestado...")
+        editar_data_retida(emprestimos, cpf_usuario)
+    elif op == '3':
+        print("Editando a data de devolução do livro emprestado...")
+    elif op == '4':
+        print("Editando valor da multa diaria por empréstimo...")
+    elif op == '5':
+        submenuEmprestimos()
+    else:
+        print("Escolha uma opção valida!")
 
 
 ####### Manipulação de Arquivo/Relatorio ######
-def calcular_idade(usuario):
-    data_nasc = usuario["data_nasc"]
+def calcular_idade(usuarios, cpf_usuario):
+    data_nasc = usuarios[cpf_usuario][6]
     data_atual = datetime.datetime.now().year
     ano_nasc = data_nasc.split('/')
     return int(data_atual) - int(ano_nasc[2])
-
 
 def limpar_terminal():
     import os
@@ -488,15 +519,14 @@ def limpar_terminal():
     else:
         os.system('clear')
 
-
-def filtro_idade(usuarios):
+def filtro_idade(usuarios, cpf_usuario):
     limpar_terminal()
     idade_minima = int(input("Digite a idade minima para filtrar: "))
     usuarios_filtrados = []
     resultado = f"\nUsúarios com mais de {idade_minima} anos:\n"
 
     for usuario in usuarios:
-        idade = calcular_idade(usuario)
+        idade = calcular_idade(usuarios, cpf_usuario)
 
         if idade > idade_minima:
             usuarios_filtrados.append(usuario)
@@ -511,14 +541,11 @@ def filtro_idade(usuarios):
 
     return resultado
 
-
 def ler_arquivo():
     with open("relatorio_filtro_idade_usuario.txt", "r", encoding='utf-8') as arquivo:
         dados_arquivo = arquivo.read()
-        print(dados_arquivo)
 
-
-def gravar_filtro_idade_usuario(usuarios):
+def gravar_filtro_idade_usuario(usuarios, cpf_usuario):
     limpar_terminal()
     nome_arquivo = "relatorio_filtro_idade_usuario.txt"
 
@@ -538,10 +565,8 @@ def gravar_filtro_idade_usuario(usuarios):
             limpar_terminal()
 
     with open(nome_arquivo, "w", encoding='utf-8') as arquivo_usuario:
-        dados_filtro_usuario = filtro_idade(usuarios)
+        dados_filtro_usuario = filtro_idade(usuarios, cpf_usuario)
         arquivo_usuario.write(dados_filtro_usuario)
         print(f"Dados gravados com sucesso em {nome_arquivo}")
         time.sleep(2)
         limpar_terminal()
-
-main_menu_editar_livro(livros,"Dom Casmurro")
