@@ -1,6 +1,7 @@
 ### JÁ ACABEI MINHA PARTE, FOFALTA VOCÊ TERMINAR A SUA PRA PODEMOS TESTAR O PROJETO!!!
 
-import datetime
+
+from datetime import datetime
 import os
 import time
 
@@ -372,6 +373,20 @@ def editar_autores(livros, nome_livro):
     else:
         return False
 
+def exibir_livros(livros):
+    if len(livros) > 0:
+        print(f"{'=' * 10} Livros {'=' * 10}")
+        for dados in livros.keys():
+            print(f'Livro: {dados}')
+            print(f"ISBN: {livros[dados][0]}")
+            print(f"Gênero: {livros[dados][1]}")
+            print(f"Pagina: {livros[dados][2]}")
+            for autor in range(len(livros[dados][3])):
+                print(livros[dados][3][autor])
+            print(f"{'=' * 20}\n")
+    else:
+        print("Nenhum livro cadastrado!")
+
 def main_menu_editar_livro(livros, nome_livro):
     op = menu_editar_livro(livros)
 
@@ -402,43 +417,60 @@ def main_menu_editar_livro(livros, nome_livro):
 emprestimos_por_cpf = {
     "111.222.333-44": [
         {
-            "isbn_livro": "978-85-359-0277-5", # Dom Casmurro
-            "data_retirada": "2025-05-10",
-            "data_devolucao": "2025-05-24", # Devolvido no prazo
-            "valor_multa_diaria": 0.50
+            "ISBN": "978-85-359-0277-5", # Dom Casmurro
+            "Data Retirada": "2025-05-10",
+            "Data de Devolção": "2025-05-24", # Devolvido no prazo
+            "Multa por emprestimo diario": 0.50
         },
         {
-            "isbn_livro": "978-85-9807-827-2", # 1984
-            "data_retirada": "2025-05-15",
-            "data_devolucao": None, # Livro emprestado e já em atraso
-            "valor_multa_diaria": 1.00
+            "ISBN": "978-85-9807-827-2", # 1984
+            "Data Retirada": "2025-05-15",
+            "Data de Devolção": None, # Livro emprestado e já em atraso
+            "Multa por emprestimo diario": 1.00
         }
     ],
     "222.333.444-55": [
         {
-            "isbn_livro": "978-85-7164-588-9", # O Alquimista
-            "data_retirada": "2025-04-20",
-            "data_devolucao": "2025-05-15", # Devolvido com atraso
-            "valor_multa_diaria": 0.75
+            "ISBN": "978-85-7164-588-9", # O Alquimista
+            "Data Retirada": "2025-04-20",
+            "Data de Devolção": "2025-05-15", # Devolvido com atraso
+            "Multa por emprestimo diario": 0.75
         }
     ],
     "333.444.555-66": [
         {
-            "isbn_livro": "978-85-7980-323-8", # A Culpa é das Estrelas
-            "data_retirada": "2025-06-01",
-            "data_devolucao": None, # Livro ainda emprestado, dentro do prazo
-            "valor_multa_diaria": 0.50
+            "ISBN": "978-85-7980-323-8", # A Culpa é das Estrelas
+            "Data Retirada": "2025-06-01",
+            "Data de Devolção": None, # Livro ainda emprestado, dentro do prazo
+            "Multa por emprestimo diario": 0.50
         }
     ],
     "444.555.666-77": [
         {
-            "isbn_livro": "978-0-7475-3274-3", # Harry Potter and the Philosopher's Stone
-            "data_retirada": "2025-03-01",
-            "data_devolucao": "2025-03-15", # Devolvido no prazo
-            "valor_multa_diaria": 0.50
+            "ISBN": "978-0-7475-3274-3", # Harry Potter and the Philosopher's Stone
+            "Data Reterida": "2025-03-01",
+            "Data Devolucao": "2025-03-15", # Devolvido no prazo
+            "Multa por Emprestimo Diario": 0.50
         }
     ]
 }
+
+def exibir_emprestimos(emprestimos):
+    print(f"{'=' * 10} Emprestimos {'=' * 10}")
+    if len(emprestimos) > 0:
+        for cpf in emprestimos.keys():
+            print(f'Usuário: {cpf}')
+            print("Livros:")
+            i = 0
+            livros = emprestimos[cpf]
+            while i < len(livros):
+                for livro in livros[i]:
+                    print(f"{livro}: {livros[i][livro]}")
+                print(f"Livro emprestado {i}")
+                i += 1
+            print(f'{"=" * 20}\n')
+    else:
+        print("Nenhum livro cadastrado!")
 
 def inserir_emprestimo(emprestimos, usuarios, livros):
     cpf_usuario = input("Informe o CPF do usúario: ")
@@ -601,3 +633,5 @@ def gravar_filtro_idade_usuario(usuarios, cpf_usuario):
         print(f"Dados gravados com sucesso em {nome_arquivo}")
         time.sleep(2)
         limpar_terminal()
+
+exibir_livros(livros)
