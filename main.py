@@ -76,11 +76,11 @@ def registerUser(usuarios, cpf):
         cep = input('Digite o CEP do usuário:')
         qtd = int(input('Quantos E-mails deseja adicionar?'))
         for i in range(qtd):
-            mail = input(f'Digite o E-mail {i+1}')
+            mail = input(f'Digite o E-mail {i+1}:')
             emails.append(mail)
         qtd2 = int(input('Digite quantos telefones deseja adicionar:'))
         for i in range(qtd2):
-            tel = input(f'Digite o telefone {i}')
+            tel = input(f'Digite o telefone {i+1}:')
             telefones.append(tel)
         nasc = input('Digite a data de nascimento do usuário (dd/mm/aaaa):')
         profissao = input('Digite a profissão do usuário:')
@@ -97,10 +97,9 @@ def registerUser(usuarios, cpf):
 def deleteUser(usuarios, cpf): 
     if cpf in usuarios:
         del usuarios[cpf]
-        return True
+        print('Cadastro excluído com sucesso!')
     else:
         print('CPF não cadastrado.')
-        return False
 def menuEditUser(usuarios, cpf):
     if cpf in usuarios:
         print('1 - Alterar Nome do Usuário')
@@ -161,50 +160,54 @@ def editProfissao(usuarios,cpf):
     profissao = input('Digite a nova profissão do usuário:')
     usuarios[cpf][7] = profissao
 def mainEditUser(usuarios, cpf):
-    opc = 1
-    while opc != 0:
-        opc = menuEditUser(usuarios,cpf)
-        if opc == '1':
-            editName(usuarios, cpf)
-            print('Nome alterado com sucesso.')
-        elif opc == '2':
-            editRua(usuarios, cpf)
-            print('Rua alterada com sucesso.')
-        elif opc == '3':
-            editNro(usuarios, cpf)
-            print('Número da casa alterado com sucesso.')
-        elif opc == '4':
-            editCep(usuarios, cpf)
-            print('CEP alterado com sucesso.')
-        elif opc == '5':
-            editEmail(usuarios, cpf)
-            print('E-mail(s) alterados com sucesso.')
-        elif opc == '6':
-            editTelefone(usuarios, cpf)
-            print('Telefone(s) alterados com sucesso.')
-        elif opc == '7':
-            editNasc(usuarios, cpf)
-            print('Data de nascimento alterada com sucesso.')
-        elif opc == '8':
-            editProfissao(usuarios, cpf)
-            print('Profissão alterada com sucesso')
-        elif opc == '9':
-            submenuUsuarios()
-            editRua(usuarios, cpf)
-            editNro(usuarios, cpf)
-            editCep(usuarios, cpf)
-            editEmail(usuarios, cpf)
-            editTelefone(usuarios, cpf)
-            editNasc(usuarios, cpf)
-            editProfissao(usuarios, cpf)
-            editName(usuarios, cpf)
-            print('Dados alterados com sucesso')
-        elif opc == '0':
-            submenuUsuarios()
-        else:
-            print()
-            print('Escolha uma opção válida')
-            print()
+    if cpf in usuarios:
+        opc = 1
+        while opc != 0:
+            opc = menuEditUser(usuarios,cpf)
+            if opc == '1':
+                editName(usuarios, cpf)
+                print('Nome alterado com sucesso.')
+            elif opc == '2':
+                editRua(usuarios, cpf)
+                print('Rua alterada com sucesso.')
+            elif opc == '3':
+                editNro(usuarios, cpf)
+                print('Número da casa alterado com sucesso.')
+            elif opc == '4':
+                editCep(usuarios, cpf)
+                print('CEP alterado com sucesso.')
+            elif opc == '5':
+                editEmail(usuarios, cpf)
+                print('E-mail(s) alterados com sucesso.')
+            elif opc == '6':
+                editTelefone(usuarios, cpf)
+                print('Telefone(s) alterados com sucesso.')
+            elif opc == '7':
+                editNasc(usuarios, cpf)
+                print('Data de nascimento alterada com sucesso.')
+            elif opc == '8':
+                editProfissao(usuarios, cpf)
+                print('Profissão alterada com sucesso')
+            elif opc == '9':
+                submenuUsuarios()
+                editRua(usuarios, cpf)
+                editNro(usuarios, cpf)
+                editCep(usuarios, cpf)
+                editEmail(usuarios, cpf)
+                editTelefone(usuarios, cpf)
+                editNasc(usuarios, cpf)
+                editProfissao(usuarios, cpf)
+                editName(usuarios, cpf)
+                print('Dados alterados com sucesso')
+            elif opc == '0':
+                submenuUsuarios()
+            else:
+                print()
+                print('Escolha uma opção válida')
+                print()
+    else:
+        print('Digite um CPF válido!')
+        mainSubmenuUsuarios(usuarios)
 def listUsers(usuarios):
     if len(usuarios) > 0:
         for i in usuarios.keys():
@@ -229,15 +232,42 @@ def listUser(usuarios, cpf):
         print(f'Rua: {usuarios[cpf][1]}')
         print(f'Número: {usuarios[cpf][2]}')
         print(f'CEP: {usuarios[cpf][3]}')
-        print(f'E-mails:')
+        print(f'E-mail(s):')
         for j in range(len(usuarios[cpf][4])):
                 print(usuarios[cpf][4][j])
+        print('Telefone(s):')
         for j in range(len(usuarios[cpf][5])):
             print(usuarios[cpf][5][j])
         print(f'Data de Nascimento: {usuarios[cpf][6]}')
         print(f'Profissão: {usuarios[cpf][7]}')
     else:
         print('CPF não cadastrado')
+def mainSubmenuUsuarios(usuarios):
+    opc = 1
+    while opc != 0:
+        opc = submenuUsuarios()
+        if opc == '1':
+            print('Listando usuários...')
+            listUsers(usuarios)
+        elif opc == '2':
+            cpf = input('Informe o CPF do usuário que deseja consultar:')
+            print('Consultando usuário...')
+            listUser(usuarios, cpf)
+        elif opc == '3':
+            cpf = input('Informe o CPF do usuário que deseja cadastrar:')
+            registerUser(usuarios, cpf)
+        elif opc == '4':
+            cpf = input('Informe o CPF do usuário que deseja editar:')
+            mainEditUser(usuarios, cpf)
+        elif opc == '5':
+            cpf = input('Informe o CPF do usuário que deseja excluir:')
+            deleteUser(usuarios, cpf)
+        elif opc =='0':
+            menu()
+        else:
+            print()
+            print('Escolha uma opção válida!')
+
 
 #######Livros#######
 livros = {
