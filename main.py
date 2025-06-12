@@ -1,3 +1,4 @@
+### JÁ ACABEI MINHA PARTE, FOFALTA VOCÊ TERMINAR A SUA PRA PODEMOS TESTAR O PROJETO!!!
 
 import datetime
 import os
