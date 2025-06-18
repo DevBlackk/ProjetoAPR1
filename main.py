@@ -1,6 +1,7 @@
 ### JÁ ACABEI MINHA PARTE, FOFALTA VOCÊ TERMINAR A SUA PRA PODEMOS TESTAR O PROJETO!!!
 
-import datetime
+
+from datetime import datetime
 import os
 import time
 
@@ -565,3 +566,4 @@ def main():
         elif opc == '0':
             print('Encerrando o programa...')        
 main()
+
