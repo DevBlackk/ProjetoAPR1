@@ -4,7 +4,7 @@ import datetime
 import os
 import time
 
-
+########## MENU E SUBMENUS ###########
 def menu():
     print('Menu de opções:')
     print('1 - Submenu de Usuários.')
@@ -58,10 +58,8 @@ def existe_arquivo(nome_arquivo):
         return True
     else:
         return False
-usuarios = {
-    '07854736103' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao'],
-    '91325994120' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao']
-}
+
+############# USUARIOS #########
 def registerUser(usuarios, cpf):
     if cpf in usuarios:
         print('cpf ja cadastrado!')
@@ -110,7 +108,7 @@ def menuEditUser(usuarios, cpf):
         print('6 - Alterar Telefones do Usuário') 
         print('7 - Alterar Data de Nascimento do Usuário')
         print('8 - Alterar Profissão do Usuário')
-        print('9 - Alterar TODOS os dados do Usuário')
+        print('9 - Alterar TODOS os dados do Usuário(Exceto CPF)')
         print('0 - Voltar')
         opc = input('Escolha uma opção:')
         return opc
@@ -137,7 +135,6 @@ def editEmail(usuarios, cpf):
             pos = i
     if pos >= 0:
         usuarios[cpf][4][pos] = novo_email
-        print()
         return True
     else:
         return False
@@ -177,11 +174,15 @@ def mainEditUser(usuarios, cpf):
                 editCep(usuarios, cpf)
                 print('CEP alterado com sucesso.')
             elif opc == '5':
-                editEmail(usuarios, cpf)
-                print('E-mail(s) alterados com sucesso.')
+                if editEmail(usuarios, cpf):
+                    print('E-mail alterado com sucesso.')
+                else:
+                    print('Não foi possível alterar o Email')
             elif opc == '6':
-                editTelefone(usuarios, cpf)
-                print('Telefone(s) alterados com sucesso.')
+                if editTelefone(usuarios, cpf):
+                    print('Telefone alterado com sucesso.')
+                else:
+                    print('Não foi possível alterar o Telefone')
             elif opc == '7':
                 editNasc(usuarios, cpf)
                 print('Data de nascimento alterada com sucesso.')
@@ -200,7 +201,7 @@ def mainEditUser(usuarios, cpf):
                 editName(usuarios, cpf)
                 print('Dados alterados com sucesso')
             elif opc == '0':
-                submenuUsuarios()
+                print('Retornando ao Submenu de Usuários...')
             else:
                 print()
                 print('Escolha uma opção válida')
@@ -219,10 +220,12 @@ def listUsers(usuarios):
             print(f'E-mails:')
             for j in range(len(usuarios[i][4])):
                 print(usuarios[i][4][j])
+            print(f'Telefones:')
             for j in range(len(usuarios[i][5])):
                 print(usuarios[i][5][j])
             print(f'Data de Nascimento: {usuarios[i][6]}')
             print(f'Profissão: {usuarios[i][7]}')
+            print('#' * 45)
     else:
         print('Lista de Usuários Vazia')
 def listUser(usuarios, cpf):
@@ -242,9 +245,133 @@ def listUser(usuarios, cpf):
         print(f'Profissão: {usuarios[cpf][7]}')
     else:
         print('CPF não cadastrado')
+
+
+####### Livros #######
+def inserirLivro(livros): #OK
+    isbn = input("Digite o ISBN do livro que deseja adicionar(999-99-999-9999-9): ")
+    if isbn in livros:
+        print("Livro já existente!")
+        return False
+    else:
+        livros[isbn] = []
+
+        nome_livro = input("Digite o título do livro: ")
+        livros[isbn].append(nome_livro)
+
+        genero = input("Digite o gênero do livro: ")
+        livros[isbn].append(genero)
+
+        autores = []
+        qtd = int(input('Informe a quantidade de autores que deseja adicionar:'))
+        for i in range(qtd):
+            autor = input('Informe o nome do autor:')
+            autores.append(autor)
+        livros[isbn].append(autores)
+
+        paginas = int(input("Digite o número de páginas do livro: "))
+        livros[isbn].append(paginas)
+        return True
+def deletarLivro(livros): #OK
+    isbn = input("Digite o ISBN do livro que deseja excluir: ")
+    if isbn in livros:
+        del livros[isbn]
+        return True
+    else:
+        print("Livro não encontrado!")
+        return False
+def listarLivros(livros): #OK
+    if len(livros) > 0:
+        for i in livros.keys():
+            print(f'ISBN: {i}')
+            print(f'Título: {livros[i][0]}')
+            print(f'Gênero: {livros[i][1]}')
+            print('Autores:')
+            for j in range(len(livros[i][2])):
+                print(livros[i][2][j])
+            print(f'Número de Páginas: {livros[i][3]}')
+            print('#' * 45)
+    else:
+        print('Lista de Livros Vazia')
+def listarLivro(livros, isbn): #OK
+    if isbn in livros:
+        print(f'ISBN: {isbn}')
+        print(f'Título: {livros[isbn][0]}')
+        print(f'Gênero: {livros[isbn][1]} ')
+        print(f'Autores:')
+        for i in range(len(livros[isbn][2])):
+            print(f'{livros[isbn][2][i]}')
+        print(f'Número de Páginas: {livros[isbn][3]}')
+    else:
+        print('Livro não encontrado.')
+def editarTítulo(livros,isbn):
+    titulo = input('Digite o novo título do livro:')
+    livros[isbn][0] = titulo
+def editar_genero(livros, isbn):
+    genero = input("Digite o novo gênero do livro: ")
+    livros[isbn][1] = genero
+    return True
+def editar_autores(livros, isbn):
+    autor = input("Digite o nome autor(a) que deseja alterar: ")
+    novo_autor = input("Digite o novo nome do autor(a): ")
+
+    pos = -1
+    for i in range(len(livros[isbn][2])):
+        if livros[isbn][2][i] == autor:
+            pos = i
+    
+    if pos >= 0:
+        livros[isbn][2][i] = novo_autor
+        return True
+    else:
+        return False
+def editar_paginas(livros, isbn):
+    pags = int(input("Digite o novo número de paginas que deseja editar: "))
+    livros[isbn][3] = pags
+def menuEditLivro():
+        print('1 - Alterar o título do livro.')
+        print('2 - Alterar o gênero do livro.')
+        print('3 - Alterar os autores do livro.')
+        print('4 - Alterar o número de páginas do livro.')
+        print('5 - Alterar todos os dados do livro (EXCETO ISBN).')
+        print('0 - Voltar ao Submenu de Livros')
+        opc = input('Escolha uma opção: ')
+        return opc
+def main_menu_editar_livro(livros):
+    isbn = input('Informe o ISBN do livro que deseja alterar os dados:')
+    if isbn in livros:    
+        op = '1'
+        while op != '0':
+            op = menuEditLivro()
+            if op == '1':
+                print("Editando o título do livro...")
+                editarTítulo(livros, isbn)
+            elif op == '2':
+                print("Editando o gênero do livro...")
+                editar_genero(livros, isbn)
+            elif op == '3':
+                print("Editando os autores do livro...")
+                editar_autores(livros, isbn)
+            elif op == '4':
+                print("Editando o número de paginas do livro...")
+                editar_paginas(livros, isbn)
+            elif op == '5':
+                print("Editando todos dados do livro...")
+                editar_genero(livros, isbn)
+                editar_paginas(livros, isbn)
+                editar_autores(livros, isbn)
+            elif op == '0':
+                print('Retornando ao Submenu de Livros...')
+            else:
+                print("Escolha uma opção válida!")
+    else:
+        print('Livro não encontrado.')
+        print('Retornando ao Submenu de Livros...')
+
+####### MAIN SUBMENUS #######
 def mainSubmenuUsuarios(usuarios):
-    opc = 1
-    while opc != 0:
+    opc = '1'
+    while opc != '0':
         opc = submenuUsuarios()
         if opc == '1':
             print('Listando usuários...')
@@ -263,279 +390,36 @@ def mainSubmenuUsuarios(usuarios):
             cpf = input('Informe o CPF do usuário que deseja excluir:')
             deleteUser(usuarios, cpf)
         elif opc =='0':
-            menu()
+            print('Voltando ao menu principal...')
         else:
             print()
             print('Escolha uma opção válida!')
-
-
-#######Livros#######
-livros = {
-    'Effective Modern C++': [
-        '978-0-13-468599-1',
-        'Técnico',
-        336,
-        ['Scott Meyers']
-    ],
-    'O Nome do Vento': [
-        '978-0-7653-2635-5',
-        'Fantasia',
-        662,
-        ['Patrick Rothfuss']
-    ],
-    'Dom Casmurro': [
-        '978-85-359-0277-2',
-        'Romance',
-        256,
-        ['Machado de Assis']
-    ]
-}
-
-def inserir_livro(livros):
-    nome_livro = input("Digite o nome do livro que deseje a adicionar: ")
-    if nome_livro in livros:
-        print("Livro já existente!")
-        return False
-    else:
-        livros[nome_livro] = []
-
-        isbn = input("Digite o ISBN do livro(999-99-999-9999-9): ")
-        livros[nome_livro].append(isbn)
-
-        genero = input("Digite o gênero do livro: ")
-        livros[nome_livro].append(genero)
-
-        autores = []
-        inserindo_atores = True
-        while inserindo_atores:
-            autor = input("Informe o nome dos autor(a): ")
-            if autor.lower() == 'sair':
-                inserindo_atores = False
-            else:
-                autores.append(autor)
-        livros[nome_livro].append(autores)
-
-        paginas = int(input("Digite o número de páginas do livro: "))
-        livros[nome_livro].append(paginas)
-        return True
-
-def deletar_livro(livros, nome_livro):
-    nome_livro = input("Digite o nome do livro que desaja excluir: ")
-    if nome_livro in livros:
-        del livros[nome_livro]
-        return True
-    else:
-        print("Livro não encontrado!")
-        return False
-
-def menu_editar_livro(livros):
-    nome_livro = input("Digite o nome do livro que deseja editar: ")
-    if nome_livro in livros:
-        print('1 - Alterar ISBN do Livro')
-        print('2 - Alterar Gênero do Livro')
-        print('3 - Alterar Autores do Livro')
-        print('4 - Alterar Número de paginas do Livro')
-        print('5 - Alterar Todos os Dados do Livro')
-        print('6 - Voltar')
-
-        op = input("Escolha uma opção: ")
-        return op
-    else:
-        print("Erro: por favor escolha uma das opções entre 1 e 6!")
-
-def editar_isbn(livros, nome_livro):
-    isbn = input("Digite o no ISBN para editar do livro: ")
-    livros[nome_livro][0] = isbn
-    return True
-
-def editar_genero(livros, nome_livro):
-    genero = input("Digite o novo gênero do livro: ")
-    livros[nome_livro][1] = genero
-    return True
-
-def editar_paginas(livvros, nome_livro):
-    pags = int(input("Digite o novo número de paginas que deseja editar: "))
-    livros[nome_livro][2] = pags
-
-def editar_autores(livros, nome_livro):
-    autor = input("Digite o nome autor(a) que deseja alterar: ")
-    novo_autor = input("Digite o novo nome do autor(a): ")
-
-    pos = 1
-    for i in range(len(livros[nome_livro][3])):
-        if livros[nome_livro][2][i] == autor:
-            pos = i
-    
-    if pos >= 0:
-        livros[nome_livro][2] = novo_autor
-        return True
-    else:
-        return False
-
-def main_menu_editar_livro(livros, nome_livro):
-    op = menu_editar_livro(livros)
-
-    if op == '1':
-        print("Editando o ISBN do livro...")
-        editar_isbn(livros,nome_livro)
-    elif op == '2':
-        print("Editando o gênero do livro...")
-        editar_genero(livros, nome_livro)
-    elif op == '3':
-        print("Editando os autores do livro...")
-        editar_autores(livros, nome_livro)
-    elif op == '4':
-        print("Editando o número de paginas do livro...")
-        editar_paginas(livros, nome_livro)
-    elif op == '5':
-        print("Editando todos dados do livro...")
-        editar_isbn(livros, nome_livro)
-        editar_genero(livros, nome_livro)
-        editar_paginas(livros, nome_livro)
-        editar_autores(livros, nome_livro)
-    elif op == '7':
-        submenuLivros()
-    else:
-        print("Escolha uma opção válida!")
-
-#######Empréstimos#######
-emprestimos_por_cpf = {
-    "111.222.333-44": [
-        {
-            "isbn_livro": "978-85-359-0277-5", # Dom Casmurro
-            "data_retirada": "2025-05-10",
-            "data_devolucao": "2025-05-24", # Devolvido no prazo
-            "valor_multa_diaria": 0.50
-        },
-        {
-            "isbn_livro": "978-85-9807-827-2", # 1984
-            "data_retirada": "2025-05-15",
-            "data_devolucao": None, # Livro emprestado e já em atraso
-            "valor_multa_diaria": 1.00
-        }
-    ],
-    "222.333.444-55": [
-        {
-            "isbn_livro": "978-85-7164-588-9", # O Alquimista
-            "data_retirada": "2025-04-20",
-            "data_devolucao": "2025-05-15", # Devolvido com atraso
-            "valor_multa_diaria": 0.75
-        }
-    ],
-    "333.444.555-66": [
-        {
-            "isbn_livro": "978-85-7980-323-8", # A Culpa é das Estrelas
-            "data_retirada": "2025-06-01",
-            "data_devolucao": None, # Livro ainda emprestado, dentro do prazo
-            "valor_multa_diaria": 0.50
-        }
-    ],
-    "444.555.666-77": [
-        {
-            "isbn_livro": "978-0-7475-3274-3", # Harry Potter and the Philosopher's Stone
-            "data_retirada": "2025-03-01",
-            "data_devolucao": "2025-03-15", # Devolvido no prazo
-            "valor_multa_diaria": 0.50
-        }
-    ]
-}
-
-def inserir_emprestimo(emprestimos, usuarios, livros):
-    cpf_usuario = input("Informe o CPF do usúario: ")
-    if cpf_usuario not in usuarios:
-        print("Usuario não existente!")
-        return False
-    else:
-        emprestimos[cpf_usuario] = []
-
-        isbn_livro = input("Informe o ISBN do livro (999-99-999-9999-9): ")
-        if isbn_livro not in livros:
-            print("Livro não existente!")
-            return False
+def mainSubmenuLivros(livros):
+    opc = '1'
+    while opc != '0':
+        opc = submenuLivros()
+        if opc == '1':
+            print('Listando livros...')
+            listarLivros(livros)
+        elif opc == '2':
+            isbn = input('Informe o ISBN do livro que deseja consultar:')
+            print('Consultando usuário...')
+            listarLivro(livros, isbn)
+        elif opc == '3':
+            inserirLivro(livros)
+        elif opc == '4':
+            main_menu_editar_livro(livros)
+        elif opc == '5':
+            isbn = input('Informe o ISBN do livro que deseja excluir:')
+            deletarLivro(livros, isbn)
+        elif opc =='0':
+            print('Voltando ao menu principal...')
         else:
-            emprestimos[cpf_usuario].append(isbn_livro)
-        
-        data_reterida = input("Digite a data de retirada (2000-02-02): ")
-        emprestimos[cpf_usuario].append(data_reterida)
-
-        data_devolucao = None
-        emprestimos[cpf_usuario].append(data_devolucao)
-
-
-        valor_multa_diaria = .50
-        emprestimos[cpf_usuario].append(valor_multa_diaria)
-        
-        return True
-
-def devolvido(emprestimos):
-    cpf_usuario = input("Digite o CPF do usuario: ")
-    if cpf_usuario in emprestimos:
-        if emprestimos[cpf_usuario][2] == None:
-            return True
-
-def deletar_emprestimo(emprestimos):
-    cpf_usuario = input("Digite o CPF do usúario: ")
-    if cpf_usuario in emprestimos:
-        del emprestimos[cpf_usuario]
-        return True
-    else:
-        print("Emprestimo não encontrado!")
-        return False
+            print()
+            print('Escolha uma opção válida!')
+            
     
-def menu_editar_emprestimo(emprestimos, ):
-    cpf_usuario = input("Informe o CPF do usúario que desaja editar o empréstimos: ")
-    if cpf_usuario in emprestimos:
-        print("1 - Alterar ISBN do livro emprestado")
-        print("2 - Alterar data de retira do livro emprestado")
-        print("3 - Alterar data de devolução do livro eprestado")
-        print("4 - Alterar valor da multa diaria do livro emprestado")
-        print("5 - Sair")
-
-        op = input("Escolha uma opção: ")
-        return op
-    else:
-        print("Erro: por favor escolha uma das opções entre 1 e 6!")
-
-def editar_isbn_emprestimo(emprestimos, cpf_usuario):
-    isbn = input("Insira o novo ISBN do livro que deseja do empréstimo: ")
-    emprestimos[cpf_usuario][0] = isbn
-    return True
-
-def editar_data_retirada(emprestimos, cpf_usuario):
-    data_retirada = input("Digite data que deseja atualizar: ")
-    emprestimos[cpf_usuario][1] = data_retirada
-    return True
-
-def editar_data_retida(emprestimos, cpf_usuario):
-    if devolvido(emprestimos):
-        data_devolução = input("Digite o a data de dvolução do livro (2000-02-02): ")
-        emprestimos[cpf_usuario][2] = data_devolução
-        return True
     
-def editar_valor_multa(emprestimos, cpf_usuario):
-    valor_multa = int(input("Digite valor que deseja editar: "))
-    emprestimos[cpf_usuario][3] = valor_multa
-    return True
-
-def main_editar_livro(emprestimos, cpf_usuario):
-    op = menu_editar_emprestimo(emprestimos)
-
-    if op =='1':
-        print("Editando o ISBN do livro...")
-        editar_isbn_emprestimo(emprestimos, cpf_usuario)
-    elif op == '2':
-        print("Editado a data de retirada do livro emprestado...")
-        editar_data_retida(emprestimos, cpf_usuario)
-    elif op == '3':
-        print("Editando a data de devolução do livro emprestado...")
-    elif op == '4':
-        print("Editando valor da multa diaria por empréstimo...")
-    elif op == '5':
-        submenuEmprestimos()
-    else:
-        print("Escolha uma opção valida!")
-
-
 ####### Manipulação de Arquivo/Relatorio ######
 def calcular_idade(usuarios, cpf_usuario):
     data_nasc = usuarios[cpf_usuario][6]
@@ -601,3 +485,83 @@ def gravar_filtro_idade_usuario(usuarios, cpf_usuario):
         print(f"Dados gravados com sucesso em {nome_arquivo}")
         time.sleep(2)
         limpar_terminal()
+
+def main():
+    usuarios = {
+    '07854736103' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao'],
+    '91325994120' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao']
+    }
+    emprestimos = {
+    "111.222.333-44": [
+        {
+            "isbn_livro": "978-85-359-0277-5", # Dom Casmurro
+            "data_retirada": "2025-05-10",
+            "data_devolucao": "2025-05-24", # Devolvido no prazo
+            "valor_multa_diaria": 0.50
+        },
+        {
+            "isbn_livro": "978-85-9807-827-2", # 1984
+            "data_retirada": "2025-05-15",
+            "data_devolucao": None, # Livro emprestado e já em atraso
+            "valor_multa_diaria": 1.00
+        }
+    ],
+    "222.333.444-55": [
+        {
+            "isbn_livro": "978-85-7164-588-9", # O Alquimista
+            "data_retirada": "2025-04-20",
+            "data_devolucao": "2025-05-15", # Devolvido com atraso
+            "valor_multa_diaria": 0.75
+        }
+    ],
+    "333.444.555-66": [
+        {
+            "isbn_livro": "978-85-7980-323-8", # A Culpa é das Estrelas
+            "data_retirada": "2025-06-01",
+            "data_devolucao": None, # Livro ainda emprestado, dentro do prazo
+            "valor_multa_diaria": 0.50
+        }
+    ],
+    "444.555.666-77": [
+        {
+            "isbn_livro": "978-0-7475-3274-3", # Harry Potter and the Philosopher's Stone
+            "data_retirada": "2025-03-01",
+            "data_devolucao": "2025-03-15", # Devolvido no prazo
+            "valor_multa_diaria": 0.50
+        }
+    ]
+    }
+    livros = {
+    '978-0-13-468599-1': [
+        'Effective Modern C++',
+        'Técnico',
+        ['Scott Meyers'],
+        336
+    ],
+    '978-0-7653-2635-5': [
+        'O Nome do Vento',
+        'Fantasia',
+        ['Patrick Rothfuss'],
+        662
+    ],
+    '978-85-359-0277-2': [
+        'Dom Casmurro',
+        'Romance',
+        ['Machado de Assis'],
+        256
+    ]
+    }
+    opc = '1'
+    while opc != '0':
+        opc = menu()
+        if opc == '1':
+            mainSubmenuUsuarios(usuarios)
+        elif opc == '2':
+            mainSubmenuLivros(livros)
+        elif opc == '3':
+            print('...')
+        elif opc == '4':
+            print('...')
+        elif opc == '0':
+            print('Encerrando o programa...')        
+main()
