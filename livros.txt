@@ -1,3 +1,3 @@
-978-0-13-468599-1;Effective Modern C++;T�cnico;Scott Meyers_;336
-978-0-7653-2635-5;O Nome do Vento;Fantasia;Patrick Rothfuss_;662
-978-85-359-0277-2;Dom Casmurro;Romance;Machado de Assis_;256
+978-0-13-468599-1;Effective Modern C++;Programação;Scott Meyers_;320
+978-0-13-235088-4;Clean Code;Programação;Robert C. Martin_;464
+978-0-321-63537-8;Design Patterns;Engenharia de Software;Erich Gamma_Richard Helm_Ralph Johnson_John Vlissides_;395

@@ -38,7 +38,7 @@ def submenuEmprestimos():
     print('0 - Voltar ao Menu Principal')
     opcao = input('Escolha uma opção:')
     return opcao
-def submenuRelatórios():
+def submenuRelatorios():
     print(f'\n Submenu de Relátorios:')
     print('1 - Listar todos os dados de todos os usuários com mais de X anos de idade')
     print('2 - Listar todos os dados de todos os livros que tenham mais do que X autores')
@@ -47,8 +47,8 @@ def submenuRelatórios():
     opcao = input('Escolha uma opção:')
     return opcao
 
+######## USUARIOS #########
 
-############# USUARIOS #########
 def registerUser(usuarios, cpf):
     if cpf in usuarios:
         print('cpf ja cadastrado!')
@@ -228,18 +228,20 @@ def listUser(usuarios, cpf):
         print(f'CEP: {usuarios[cpf][3]}')
         print(f'E-mail(s):')
         for j in range(len(usuarios[cpf][4])):
+                print(' ', end='')
                 print(usuarios[cpf][4][j])
         print('Telefone(s):')
         for j in range(len(usuarios[cpf][5])):
+            print(' ', end='')
             print(usuarios[cpf][5][j])
         print(f'Data de Nascimento: {usuarios[cpf][6]}')
         print(f'Profissão: {usuarios[cpf][7]}')
     else:
         print('CPF não cadastrado')
 
-
 ####### Livros #######
-def inserirLivro(livros): #OK
+
+def inserirLivro(livros):  
     isbn = input("Digite o ISBN do livro que deseja adicionar(999-99-999-9999-9): ")
     if isbn in livros:
         print("Livro já existente!")
@@ -263,7 +265,7 @@ def inserirLivro(livros): #OK
         paginas = int(input("Digite o número de páginas do livro: "))
         livros[isbn].append(paginas)
         return True
-def deletarLivro(livros): #OK
+def deletarLivro(livros): 
     isbn = input("Digite o ISBN do livro que deseja excluir: ")
     if isbn in livros:
         del livros[isbn]
@@ -271,7 +273,7 @@ def deletarLivro(livros): #OK
     else:
         print("Livro não encontrado!")
         return False
-def listarLivros(livros): #OK
+def listarLivros(livros): 
     if len(livros) > 0:
         for i in livros.keys():
             print(f'ISBN: {i}')
@@ -285,13 +287,14 @@ def listarLivros(livros): #OK
             print('#' * 45)
     else:
         print('Lista de Livros Vazia')
-def listarLivro(livros, isbn): #OK
+def listarLivro(livros, isbn): 
     if isbn in livros:
         print(f'ISBN: {isbn}')
         print(f'Título: {livros[isbn][0]}')
         print(f'Gênero: {livros[isbn][1]} ')
         print(f'Autores:')
         for i in range(len(livros[isbn][2])):
+            print(' ', end='')
             print(f'{livros[isbn][2][i]}')
         print(f'Número de Páginas: {livros[isbn][3]}')
     else:
@@ -441,6 +444,7 @@ def mainEditEmprestimo(emprestimos):
         print('Empréstimo não encontrado.')
 
 ####### MAIN SUBMENUS #######
+
 def mainSubmenuUsuarios(usuarios):
     opc = '1'
     while opc != '0':
@@ -462,7 +466,7 @@ def mainSubmenuUsuarios(usuarios):
             cpf = input('Informe o CPF do usuário que deseja excluir:')
             deleteUser(usuarios, cpf)
         elif opc =='0':
-            print('Voltando ao menu principal...')
+            print('Retornando ao menu principal...')
         else:
             print()
             print('Escolha uma opção válida!')
@@ -490,7 +494,7 @@ def mainSubmenuLivros(livros):
             print()
             deletarLivro(livros, isbn)
         elif opc =='0':
-            print('Voltando ao menu principal...')
+            print('Retornando ao menu principal...')
         else:
             print()
             print('Escolha uma opção válida!')
@@ -518,9 +522,26 @@ def mainSubmenuEmprestimos(emprestimos):
             print('Excluindo Empréstimo...')
             print()
             deletarEmprestimo(emprestimos)
-            
-    
+        elif opc == '0':
+            print('Retornando ao menu principal...')
+def mainSubmenuRelatorios(usuarios, livros, emprestimos):
+    relat_usuarios = 'relatorio_idade.txt'
+    relat_autores = 'relatorio_autores.txt'
+    relat_emprestimos = 'relatorio_emprestimos.txt'
+    opc = '1'
+    while opc != '0':
+        opc = submenuRelatorios()
+        if opc == '1':
+            relatorioIdade(usuarios,relat_usuarios)
+        elif opc == '2':
+            relatorioAutores(livros,relat_autores)
+        elif opc == '3':
+            relatorioEmprestimo(emprestimos, usuarios, livros, relat_emprestimos)
+        elif opc == '0':
+            print('Retornando ao menu principal...')
+
 ####### ARQUIVOS ########
+
 def escreverArquivoUsuario(usuarios, arquivo_usuario):
     arq = open(arquivo_usuario, 'w')
     for cpf in usuarios:
@@ -604,7 +625,40 @@ def lerArquivoEmprestimos(arquivo_emprestimos):
             emprestimos[chave].append(linha[3])
             emprestimos[chave].append(linha[4])
         arq.close()
-    return emprestimos
+    return emprestimos    
+def escreverRelatorioEmprestimos(arquivo, relatorio):
+    arq = open(arquivo, 'w')
+    for i in range(len(relatorio)):
+        linha = ''
+        for j in range(len(relatorio[i])):
+            linha += relatorio[i][j] +';'
+        linha = linha[:-1]
+        linha += '\n'
+        arq.write(linha)
+    arq.close()
+def escreverRelatorioLivros(isbn_desejado, livros, arquivo_livros):
+    arq = open(arquivo_livros, 'w')
+    for isbn in isbn_desejado:
+        linha = ''
+        linha += isbn + ';' + livros[isbn][0] + ';' + livros[isbn][1] + ';'
+        for autor in livros[isbn][2]:
+            linha+= autor + '_'
+        linha += ';' + str(livros[isbn][3]) + '\n'
+        arq.write(linha)
+    arq.close()
+def escreverRelatorioUsuario(cpf_desejado,usuarios, arquivo_usuario):
+    arq = open(arquivo_usuario, 'w')
+    for cpf in cpf_desejado:
+        linha = ''
+        linha+= cpf + ';' + usuarios[cpf][0] + ';' + usuarios[cpf][1] + ';' + usuarios[cpf][2] + ';' + usuarios[cpf][3] + ';'
+        for email in usuarios[cpf][4]:
+            linha += email + '_'
+        linha += ';'
+        for telefone in usuarios[cpf][5]:
+            linha += telefone + '_'
+        linha+= ';' + usuarios[cpf][6] + ';' + usuarios[cpf][7] + '\n'
+        arq.write(linha)
+    arq.close()
 def existe_arquivo(nome_arquivo):
     import os
     if os.path.exists(nome_arquivo):
@@ -612,10 +666,140 @@ def existe_arquivo(nome_arquivo):
     else:
         return False 
 
+##### RELATORIOS ######
+
+def calcularIdade(usuarios, data):
+
+    idades_por_cpf = dict()
+    data = data.split('/')
+    for cpf in usuarios.keys():
+        nasc = usuarios[cpf][6]
+        nasc = nasc.split('/')
+        if nasc[1] == data[1]:
+            if nasc[0] == data[0]:
+                idade = int(data[2]) - int(nasc[2])
+            elif nasc[0] > data[0]:
+                idade = int(data[2]) - int(nasc[2])
+            elif nasc[0] < data[0]:
+                idade = (int(data[2]) - int(nasc[2])) - 1
+        elif nasc[1] > data[1]:
+            idade = (int(data[2]) - int(nasc[2])) - 1
+        elif nasc[1] < data[1]:
+            idade = int(data[2]) - int(nasc[2])
+        idades_por_cpf[cpf] = idade
+    return idades_por_cpf
+def guardarCpfRelatorioIdade(usuarios, x):
+    data = input('Informe a data atual (dd/mm/aaaa):')
+    idades = calcularIdade(usuarios, data)
+    guardar_cpf = []
+    for cpf in idades.keys():
+        if idades[cpf] >= x:
+            guardar_cpf.append(cpf)
+    return guardar_cpf
+def relatorioIdade(usuarios, arquivo):
+    x = int(input('Digite a idade mínima desejada:'))
+    cpf_idade_desejada = guardarCpfRelatorioIdade(usuarios, x)
+    escreverRelatorioUsuario(cpf_idade_desejada, usuarios, arquivo)
+    if len(cpf_idade_desejada) > 0:
+        for i in cpf_idade_desejada:
+            listUser(usuarios, i)
+            print('#' * 20)
+    else:
+        print()
+        print('Não há usuários maiores ou iguais a idade mínima desejada.')
+def guardarIsbnQuantAutores(livros, x):
+    isbn_desejado = []
+    for isbn in livros:
+        if len(livros[isbn][2]) >= x:
+            isbn_desejado.append(isbn)
+    return isbn_desejado
+def relatorioAutores(livros, arquivo):
+    x = int(input('Informe a quantidade mínima de autores desejada:'))
+    isbn_desejado = guardarIsbnQuantAutores(livros, x)
+    escreverRelatorioLivros(isbn_desejado, livros, arquivo)
+    if len (isbn_desejado) > 0:
+        for i in isbn_desejado:
+            listarLivro(livros, i)
+            print('#' * 20)
+    else:
+        print()
+        print('Não há livros com a quantidade mínima de autores desejada.')
+def guardarEmprestimoData(emprestimos, x, y):
+    guardar_chave=[]
+    x = x.split('/')
+    x[0] = int(x[0])
+    x[1] = int(x[1])
+    x[2] = int(x[2])
+    y = y.split('/')
+    y[0] = int(y[0])
+    y[1] = int(y[1])
+    y[2] = int(y[2])
+    for chave in emprestimos.keys():
+        data = emprestimos[chave][0].split('/')
+        data[0] = int(data[0])
+        data[1] = int(data[1])
+        data[2] = int(data[2])
+        if data[2] > x[2] and data[2] < y[2]:
+            guardar_chave.append(chave)
+        elif data[2] == x[2] and data[2] == y[2]:
+            if data[1] > x[1] and data[1] < y[1]:
+                guardar_chave.append(chave)
+            elif data[1] == x[1] and data[1] == y[1]:
+                if data[0] >= x[0] and data[0] <= y[0]:
+                    guardar_chave.append(chave)
+            elif data[1] == x[1] and data[1] < y[1]:
+                if data[0] >= x[0]:
+                    guardar_chave.append(chave)
+            elif data[1] > x[1] and data[1] == y[1]:
+                if data[0] <= y[0]:
+                    guardar_chave.append(chave)
+        elif data[2] == x[2] and data[2] < y[2]:
+            if data[1] > x[1]:
+                guardar_chave.append(chave)
+            elif data[1] == x[1] and data[0] >= x[0]:
+                guardar_chave.append(chave)
+        elif data[2] > x[2] and data[2] == y[2]:
+            if data[1] < y[1]:
+                guardar_chave.append(chave)
+            elif data[1] == y[1] and data[0] <= y[0]:
+                guardar_chave.append(chave)
+    return guardar_chave
+def guardarRelatorioEmprestimo(emprestimos,usuarios, livros):
+    data1 = input('Informe a data mínima desejada (dd/mm/aaaa):')
+    data2 = input('Informe a data máxima desejada (dd/mm/aaaa):')
+    chaves = guardarEmprestimoData(emprestimos, data1, data2)
+    relatorio = []
+    if len(chaves) > 0:
+        for dados in chaves:
+            dados_relatorio =[]
+            dados_relatorio.append(dados[0])
+            dados_relatorio.append(usuarios[dados[0]][0])
+            dados_relatorio.append(dados[1])
+            dados_relatorio.append(livros[dados[1]][0])
+            dados_relatorio.append(emprestimos[dados][0])
+            dados_relatorio.append(emprestimos[dados][1])
+            relatorio.append(dados_relatorio)
+    else:
+        print('Não há devoluções nessas datas.')
+    return relatorio
+def relatorioEmprestimo(emprestimos, usuarios, livros, arquivo):
+    relatorio = guardarRelatorioEmprestimo(emprestimos,usuarios,livros)
+    if len(relatorio) > 0:
+        escreverRelatorioEmprestimos(arquivo, relatorio)
+        for i in range(len(relatorio)):
+            print(f'CPF: {relatorio[i][0]}')
+            print(f'Nome: {relatorio[i][1]}')
+            print(f'ISBN do Livro: {relatorio[i][2]}')
+            print(f'Título do Livro: {relatorio[i][3]}')
+            print(f'Data de Devolução: {relatorio[i][4]}')
+            print(f'Multa por atraso: {relatorio[i][5]}')
+            print('#' *25)
+        
 def main():
     arquivo_usuario = 'usuarios.txt'
     arquivo_livros = 'livros.txt'
     arquivo_emprestimos = 'emprestimos.txt'
+    arquivo_relatorio_emprestimo = 'relatorio_emprestimos.txt'
     usuarios = lerArquivoUsuario(arquivo_usuario)
     livros = lerArquivoLivros(arquivo_livros)
     emprestimos = lerArquivoEmprestimos(arquivo_emprestimos)
@@ -623,18 +807,26 @@ def main():
     while opc != '0':
         opc = menu()
         if opc == '1':
+            print()
             mainSubmenuUsuarios(usuarios)
+            print()
         elif opc == '2':
+            print()
             mainSubmenuLivros(livros)
+            print()
         elif opc == '3':
+            print()
             mainSubmenuEmprestimos(emprestimos)
+            print()
         elif opc == '4':
-            print('...')
+            print()
+            mainSubmenuRelatorios(usuarios, livros, emprestimos)
+            print()
         elif opc == '0':
+            print()
             print('Encerrando o programa...')
     escreverArquivoUsuario(usuarios, arquivo_usuario)
     escreverArquivoLivros(livros,arquivo_livros)
     escreverArquivoEmprestimos(emprestimos, arquivo_emprestimos)
-
 main()
 
