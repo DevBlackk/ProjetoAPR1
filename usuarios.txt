@@ -1,0 +1,3 @@
+07854736103;nome;rua;nro;cep;email1_email2_;telefone1_telefone2_;nasc;profissao
+91325994120;nome;rua;nro;cep;email1_email2_;telefone1_telefone2_;nasc;profissao
+000007;giovana;we;3;07868594;aaaa_sss_;33333_44444_;07/07/2007;medico

@@ -1,10 +1,3 @@
-### JÁ ACABEI MINHA PARTE, FOFALTA VOCÊ TERMINAR A SUA PRA PODEMOS TESTAR O PROJETO!!!
-
-
-from datetime import datetime
-import os
-import time
-
 ########## MENU E SUBMENUS ###########
 def menu():
     print('Menu de opções:')
@@ -53,12 +46,7 @@ def submenuRelatórios():
     print('0 - Voltar ao Menu Principal')
     opcao = input('Escolha uma opção:')
     return opcao
-def existe_arquivo(nome_arquivo):
-    import os
-    if os.path.exists(nome_arquivo):
-        return True
-    else:
-        return False
+
 
 ############# USUARIOS #########
 def registerUser(usuarios, cpf):
@@ -159,8 +147,8 @@ def editProfissao(usuarios,cpf):
     usuarios[cpf][7] = profissao
 def mainEditUser(usuarios, cpf):
     if cpf in usuarios:
-        opc = 1
-        while opc != 0:
+        opc = '1'
+        while opc != '0':
             opc = menuEditUser(usuarios,cpf)
             if opc == '1':
                 editName(usuarios, cpf)
@@ -220,9 +208,11 @@ def listUsers(usuarios):
             print(f'CEP: {usuarios[i][3]}')
             print(f'E-mails:')
             for j in range(len(usuarios[i][4])):
+                print(' ', end='')
                 print(usuarios[i][4][j])
             print(f'Telefones:')
             for j in range(len(usuarios[i][5])):
+                print(' ', end='')
                 print(usuarios[i][5][j])
             print(f'Data de Nascimento: {usuarios[i][6]}')
             print(f'Profissão: {usuarios[i][7]}')
@@ -289,6 +279,7 @@ def listarLivros(livros): #OK
             print(f'Gênero: {livros[i][1]}')
             print('Autores:')
             for j in range(len(livros[i][2])):
+                print(' ', end='')
                 print(livros[i][2][j])
             print(f'Número de Páginas: {livros[i][3]}')
             print('#' * 45)
@@ -369,6 +360,86 @@ def main_menu_editar_livro(livros):
         print('Livro não encontrado.')
         print('Retornando ao Submenu de Livros...')
 
+####### Empréstimos #######
+
+def chaveEmprestimo():
+    cpf = input('Digite o CPF do cliente:')
+    isbn = input('Digite o ISBN do livro:')
+    data_ret = input('Digite a data de retirada do livro:')
+    chave = (cpf, isbn, data_ret)
+    return chave
+def inserirEmprestimo(emprestimos):
+    chave = chaveEmprestimo()
+    if chave in emprestimos:
+        print('Empréstimo já cadastrado')
+    else:
+        data_dev = input('Digite a data de devolução do livro')
+        multa = input('Digite a multa por atraso')
+        emprestimos[chave] = [data_dev, multa]
+        print('Empréstimo Cadastrado com Sucesso.')
+def deletarEmprestimo(emprestimos):
+    chave = chaveEmprestimo()
+    if chave in emprestimos:
+        del emprestimos[chave]
+        print('Empréstimo Deletado com Sucesso.')
+    else:
+        print('Empréstimo não encontrado')
+def listarEmprestimos(emprestimos):
+    if len(emprestimos) > 0:
+        for chave in emprestimos.keys():
+            print(f'CPF: {chave[0]}')
+            print(f'ISBN: {chave[1]}')
+            print(f'Data de Retirada: {chave[2]}')
+            print(f'Data de Devolução: {emprestimos[chave][0]}')
+            print(f'Valor Diário da Multa por Atraso: {emprestimos[chave][1]}')
+            print('#' * 45)
+    else:
+        print('Não há empréstimos')
+def listarEmprestimo(emprestimos):
+    chave = chaveEmprestimo()
+    if chave in emprestimos:
+            print(f'CPF: {chave[0]}')
+            print(f'ISBN: {chave[1]}')
+            print(f'Data de Retirada: {chave[2]}')
+            print(f'Data de Devolução: {emprestimos[chave][0]}')
+            print(f'Valor Diário da Multa por Atraso: {emprestimos[chave][1]}')
+    else:
+        print('Empréstimo não encontrado')
+def editDataDev(emprestimos, chave):
+    novaData = input('Informe a nova data de devolução:')
+    emprestimos[chave][0] = novaData
+def editMulta(emprestimos, chave):
+    novaMulta = input('Digite a nova multa:')
+    emprestimos[chave][1] = novaMulta
+def menuEditEmprestimo():
+    print('1 - Alterar Data de Devolução do Empréstimo')
+    print('2 - Alterar Valor Diário da Multa por Atraso do Empréstimo')
+    print('0 - Retornar ao Submenu de Empréstimos')
+    opc = input('Escolha uma opção:')
+    return opc
+def mainEditEmprestimo(emprestimos):
+    chave = chaveEmprestimo()
+    opc = '1'
+    if chave in emprestimos:
+        while opc != '0':
+            opc = menuEditEmprestimo()
+            if opc == '1':
+                print('Alterando Data de Devolução...')
+                print()
+                editDataDev(emprestimos, chave)
+                print()
+                print('Data de devolução alterada com sucesso.')
+            elif opc == '2':
+                print('Alterando Valor diário da multa por atraso...')
+                print()
+                editMulta(emprestimos, chave)
+                print()
+                print('Valor diário da multa por atraso alterado com sucesso.')
+            elif opc == '0':
+                print('Retornando ao Submenu de Empréstimos...')
+    else:
+        print('Empréstimo não encontrado.')
+
 ####### MAIN SUBMENUS #######
 def mainSubmenuUsuarios(usuarios):
     opc = '1'
@@ -401,157 +472,153 @@ def mainSubmenuLivros(livros):
         opc = submenuLivros()
         if opc == '1':
             print('Listando livros...')
+            print()
             listarLivros(livros)
         elif opc == '2':
             isbn = input('Informe o ISBN do livro que deseja consultar:')
-            print('Consultando usuário...')
+            print('Consultando Livro...')
             listarLivro(livros, isbn)
         elif opc == '3':
+            print('Inserindo Livro...')
+            print()
             inserirLivro(livros)
         elif opc == '4':
             main_menu_editar_livro(livros)
         elif opc == '5':
             isbn = input('Informe o ISBN do livro que deseja excluir:')
+            print('Deletando Livro...')
+            print()
             deletarLivro(livros, isbn)
         elif opc =='0':
             print('Voltando ao menu principal...')
         else:
             print()
             print('Escolha uma opção válida!')
+def mainSubmenuEmprestimos(emprestimos):
+    opc = '1'
+    while opc != '0':
+        opc = submenuEmprestimos()
+        if opc == '1':
+            print('Exibindo Todos os Empréstimos...')
+            print()
+            listarEmprestimos(emprestimos)
+        elif opc == '2':
+            print('Consultando Empréstimo...')
+            print()
+            listarEmprestimo(emprestimos)
+        elif opc =='3':
+            print('Cadastrando Novo Empréstimo...')
+            print()
+            inserirEmprestimo(emprestimos)
+        elif opc == '4':
+            print('Alterando Empréstimo...')
+            print()
+            mainEditEmprestimo(emprestimos)
+        elif opc == '5':
+            print('Excluindo Empréstimo...')
+            print()
+            deletarEmprestimo(emprestimos)
             
     
-    
-####### Manipulação de Arquivo/Relatorio ######
-def calcular_idade(usuarios, cpf_usuario):
-    data_nasc = usuarios[cpf_usuario][6]
-    data_atual = datetime.datetime.now().year
-    ano_nasc = data_nasc.split('/')
-    return int(data_atual) - int(ano_nasc[2])
-
-def limpar_terminal():
+####### ARQUIVOS ########
+def escreverArquivoUsuario(usuarios, arquivo_usuario):
+    arq = open(arquivo_usuario, 'w')
+    for cpf in usuarios:
+        linha = ''
+        linha+= cpf + ';' + usuarios[cpf][0] + ';' + usuarios[cpf][1] + ';' + usuarios[cpf][2] + ';' + usuarios[cpf][3] + ';'
+        for email in usuarios[cpf][4]:
+            linha += email + '_'
+        linha += ';'
+        for telefone in usuarios[cpf][5]:
+            linha += telefone + '_'
+        linha+= ';' + usuarios[cpf][6] + ';' + usuarios[cpf][7] + '\n'
+        arq.write(linha)
+    arq.close()
+def lerArquivoUsuario(arquivo_usuario):
+    usuarios = dict()
+    if existe_arquivo(arquivo_usuario):
+        arq = open(arquivo_usuario, 'r')
+        for linha in arq:
+            linha = linha.replace('\n', '')
+            linha = linha.split(';')
+            cpf = linha[0]
+            usuarios[cpf] = []
+            usuarios[cpf].append(linha[1])
+            usuarios[cpf].append(linha[2])
+            usuarios[cpf].append(linha[3])
+            usuarios[cpf].append(linha[4])
+            emails = linha[5].split('_')
+            del emails[-1]
+            usuarios[cpf].append(emails)
+            telefones = linha[6].split('_')
+            del telefones[-1]
+            usuarios[cpf].append(telefones)
+            usuarios[cpf].append(linha[7])
+            usuarios[cpf].append(linha[8])
+        arq.close()
+    return usuarios
+def escreverArquivoLivros(livros, arquivo_livros):
+    arq = open(arquivo_livros, 'w')
+    for isbn in livros:
+        linha = ''
+        linha += isbn + ';' + livros[isbn][0] + ';' + livros[isbn][1] + ';'
+        for autor in livros[isbn][2]:
+            linha+= autor + '_'
+        linha += ';' + str(livros[isbn][3]) + '\n'
+        arq.write(linha)
+    arq.close()
+def lerArquivoLivros(arquivo_livros):
+    livros = dict()
+    if existe_arquivo(arquivo_livros):
+        arq = open(arquivo_livros, 'r')
+        for linha in arq:
+            linha = linha.replace('\n', '')
+            linha = linha.split(';')
+            isbn = linha[0]
+            livros[isbn] = []
+            livros[isbn].append(linha[1])
+            livros[isbn].append(linha[2])
+            autores = linha[3].split('_')
+            del autores[-1]
+            livros[isbn].append(autores)
+            livros[isbn].append(linha[4])
+        arq.close()
+    return livros
+def escreverArquivoEmprestimos(emprestimos, arquivo_emprestimos):
+    arq = open(arquivo_emprestimos, 'w')
+    for chave in emprestimos:
+        linha = ''
+        chave_str = chave[0] + ';' + chave[1] + ';' + chave[2] 
+        linha += chave_str + ';' + emprestimos[chave][0] + ';' + emprestimos[chave][1] + '\n'
+        arq.write(linha)
+    arq.close()
+def lerArquivoEmprestimos(arquivo_emprestimos):
+    emprestimos = dict()
+    if existe_arquivo(arquivo_emprestimos):
+        arq = open(arquivo_emprestimos, 'r')
+        for linha in arq:
+            linha = linha.replace('\n', '')
+            linha = linha.split(';')
+            chave = (linha[0], linha[1], linha[2])
+            emprestimos[chave] = []
+            emprestimos[chave].append(linha[3])
+            emprestimos[chave].append(linha[4])
+        arq.close()
+    return emprestimos
+def existe_arquivo(nome_arquivo):
     import os
-    if os.name == 'nt':
-        os.system('cls')
-    else:
-        os.system('clear')
-
-def filtro_idade(usuarios, cpf_usuario):
-    limpar_terminal()
-    idade_minima = int(input("Digite a idade minima para filtrar: "))
-    usuarios_filtrados = []
-    resultado = f"\nUsúarios com mais de {idade_minima} anos:\n"
-
-    for usuario in usuarios:
-        idade = calcular_idade(usuarios, cpf_usuario)
-
-        if idade > idade_minima:
-            usuarios_filtrados.append(usuario)
-
-    if usuarios_filtrados:
-        for usuario in usuarios_filtrados:
-            resultado += "\n-------------------\n"
-            for chave, valor in usuario.items():
-                resultado += f"{chave}: {valor}\n"
-    else:
-        resultado += "\nNenhum usuário encontrado com o critério especificado."
-
-    return resultado
-
-def ler_arquivo():
-    with open("relatorio_filtro_idade_usuario.txt", "r", encoding='utf-8') as arquivo:
-        dados_arquivo = arquivo.read()
-
-def gravar_filtro_idade_usuario(usuarios, cpf_usuario):
-    limpar_terminal()
-    nome_arquivo = "relatorio_filtro_idade_usuario.txt"
-
     if os.path.exists(nome_arquivo):
-        verificando = True
-        while verificando:
-            resposta = input(f"O arquivo {nome_arquivo} já existe. Deseja sobrescrevê-lo? (s/n): ").lower()
-            if resposta in ['s', 'n']:
-                if resposta == 'n':
-                    print("Operação cancelada.")
-                    datetime.time.sleep(2)
-                    limpar_terminal()
-                    return
-                verificando = False
-            print("Por favor, responda com 's' para sim ou 'n' para não.")
-            time.sleep(1)
-            limpar_terminal()
-
-    with open(nome_arquivo, "w", encoding='utf-8') as arquivo_usuario:
-        dados_filtro_usuario = filtro_idade(usuarios, cpf_usuario)
-        arquivo_usuario.write(dados_filtro_usuario)
-        print(f"Dados gravados com sucesso em {nome_arquivo}")
-        time.sleep(2)
-        limpar_terminal()
+        return True
+    else:
+        return False 
 
 def main():
-    usuarios = {
-    '07854736103' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao'],
-    '91325994120' : ['nome', 'rua', 'nro', 'cep', ['email1', 'email2'], ['telefone1', 'telefone2'], 'nasc', 'profissao']
-    }
-    emprestimos = {
-    "111.222.333-44": [
-        {
-            "isbn_livro": "978-85-359-0277-5", # Dom Casmurro
-            "data_retirada": "2025-05-10",
-            "data_devolucao": "2025-05-24", # Devolvido no prazo
-            "valor_multa_diaria": 0.50
-        },
-        {
-            "isbn_livro": "978-85-9807-827-2", # 1984
-            "data_retirada": "2025-05-15",
-            "data_devolucao": None, # Livro emprestado e já em atraso
-            "valor_multa_diaria": 1.00
-        }
-    ],
-    "222.333.444-55": [
-        {
-            "isbn_livro": "978-85-7164-588-9", # O Alquimista
-            "data_retirada": "2025-04-20",
-            "data_devolucao": "2025-05-15", # Devolvido com atraso
-            "valor_multa_diaria": 0.75
-        }
-    ],
-    "333.444.555-66": [
-        {
-            "isbn_livro": "978-85-7980-323-8", # A Culpa é das Estrelas
-            "data_retirada": "2025-06-01",
-            "data_devolucao": None, # Livro ainda emprestado, dentro do prazo
-            "valor_multa_diaria": 0.50
-        }
-    ],
-    "444.555.666-77": [
-        {
-            "isbn_livro": "978-0-7475-3274-3", # Harry Potter and the Philosopher's Stone
-            "data_retirada": "2025-03-01",
-            "data_devolucao": "2025-03-15", # Devolvido no prazo
-            "valor_multa_diaria": 0.50
-        }
-    ]
-    }
-    livros = {
-    '978-0-13-468599-1': [
-        'Effective Modern C++',
-        'Técnico',
-        ['Scott Meyers'],
-        336
-    ],
-    '978-0-7653-2635-5': [
-        'O Nome do Vento',
-        'Fantasia',
-        ['Patrick Rothfuss'],
-        662
-    ],
-    '978-85-359-0277-2': [
-        'Dom Casmurro',
-        'Romance',
-        ['Machado de Assis'],
-        256
-    ]
-    }
+    arquivo_usuario = 'usuarios.txt'
+    arquivo_livros = 'livros.txt'
+    arquivo_emprestimos = 'emprestimos.txt'
+    usuarios = lerArquivoUsuario(arquivo_usuario)
+    livros = lerArquivoLivros(arquivo_livros)
+    emprestimos = lerArquivoEmprestimos(arquivo_emprestimos)
     opc = '1'
     while opc != '0':
         opc = menu()
@@ -560,10 +627,14 @@ def main():
         elif opc == '2':
             mainSubmenuLivros(livros)
         elif opc == '3':
-            print('...')
+            mainSubmenuEmprestimos(emprestimos)
         elif opc == '4':
             print('...')
         elif opc == '0':
-            print('Encerrando o programa...')        
+            print('Encerrando o programa...')
+    escreverArquivoUsuario(usuarios, arquivo_usuario)
+    escreverArquivoLivros(livros,arquivo_livros)
+    escreverArquivoEmprestimos(emprestimos, arquivo_emprestimos)
+
 main()
 
