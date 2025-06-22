@@ -141,7 +141,7 @@ def deletarEmail(usuarios, cpf):
             pos = i
     
     if pos >= 0:
-        del usuarios[cpf][4][i]
+        del usuarios[cpf][4][pos]
         return True
     else:
         return False
@@ -441,8 +441,7 @@ def main_editar_autor(livros,isbn):
             print('Excluindo Autor...')
             deletar_autor(livros, isbn)
         elif opc == '0':
-            print('Retornando ao Submenu de Livros....')
-            
+            print('Retornando ao Submenu de Livros....')       
 def editar_paginas(livros, isbn):
     pags = int(input("Digite o novo número de paginas que deseja editar: "))
     livros[isbn][3] = pags
