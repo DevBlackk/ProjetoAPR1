@@ -127,6 +127,50 @@ def editEmail(usuarios, cpf):
         return True
     else:
         return False
+def inserirEmail(usuarios, cpf):
+    qtd = int(input('Digite quantos E-mails deseja inserir:'))
+    for i in range(qtd):
+        email = input(f'Digite o Email {i+1}:')
+        usuarios[cpf][4].append(email)
+def deletarEmail(usuarios, cpf):
+    email = input("Digite o email que deseja deletar: ")
+
+    pos = -1
+    for i in range(len(usuarios[cpf][4])):
+        if usuarios[cpf][4][i] == email:
+            pos = i
+    
+    if pos >= 0:
+        del usuarios[cpf][4][i]
+        return True
+    else:
+        return False
+def menuEditEmail():
+    print('1 - Editar Email')
+    print('2 - Inserir Email')
+    print('3 - Deletar Email')
+    print('0 - Voltar ao Submenu de Editar Usuário')
+    opc = input('Escolha uma opção:')
+    return opc
+def mainMenuEditEmail(usuarios,cpf):
+    opc = '1'
+    while opc != '0':
+        opc = menuEditEmail()
+        if opc == '1':
+            if editEmail(usuarios,cpf):
+                print('E-mail alterado com sucesso.')
+            else:
+                print('E-mail não encontrado.')
+        elif opc == '2':
+            inserirEmail(usuarios,cpf)
+            print('E-mail(s) inserido com sucesso.')
+        elif opc == '3':
+            if deletarEmail(usuarios,cpf):
+                print('E-mail excluído com sucesso.')
+            else:
+                print('E-mail não encontrado.')
+        elif opc == '0':
+            print('Retornando ao submenu de usuários...')
 def editTelefone(usuarios, cpf):
     tel = input('Digite o telefone que deseja alterar:')
     novo_tel = input('Digite o telefone alterado:')
@@ -139,6 +183,50 @@ def editTelefone(usuarios, cpf):
         return True
     else:
         return False
+def inserirTelefone(usuarios,cpf):
+    qtd = int(input('Digite quantos Telefones deseja inserir:'))
+    for i in range(qtd):
+        email = input(f'Digite o Telefone {i+1}:')
+        usuarios[cpf][4].append(email)
+def deletarTelefone(usuarios,cpf):
+    telefone = input("Digite o telefone que deseja deletar: ")
+
+    pos = -1
+    for i in range(len(usuarios[cpf][5])):
+        if usuarios[cpf][5][i] == telefone:
+            pos = i
+    
+    if pos >= 0:
+        del usuarios[cpf][5][i]
+        return True
+    else:
+        return False  
+def menuEditTelefone():
+    print('1 - Editar telefone')
+    print('2 - Inserir telefone')
+    print('3 - Deletar telefone')
+    print('0 - Voltar ao Submenu de Editar Usuário')
+    opc = input('Escolha uma opção:')
+    return opc
+def mainMenuEditTelefone(usuarios,cpf):
+    opc = '1'
+    while opc != '0':
+        opc = menuEditTelefone()
+        if opc == '1':
+            if editTelefone(usuarios,cpf):
+                print('Telefone alterado com sucesso.')
+            else:
+                print('Telefone não encontrado.')
+        elif opc == '2':
+            inserirTelefone(usuarios,cpf)
+            print('Telefone(s) inserido com sucesso.')
+        elif opc == '3':
+            if deletarTelefone(usuarios,cpf):
+                print('Telefone excluído com sucesso.')
+            else:
+                print('Telefone não encontrado.')
+        elif opc == '0':
+            print('Retornando ao submenu de usuários...')
 def editNasc(usuarios,cpf):
     nascimento = input('Digite a nova data de nascimento (dd/mm/aaaa) do usuário:')
     usuarios[cpf][6] = nascimento
@@ -163,15 +251,9 @@ def mainEditUser(usuarios, cpf):
                 editCep(usuarios, cpf)
                 print('CEP alterado com sucesso.')
             elif opc == '5':
-                if editEmail(usuarios, cpf):
-                    print('E-mail alterado com sucesso.')
-                else:
-                    print('Não foi possível alterar o Email')
+                mainMenuEditEmail(usuarios, cpf)
             elif opc == '6':
-                if editTelefone(usuarios, cpf):
-                    print('Telefone alterado com sucesso.')
-                else:
-                    print('Não foi possível alterar o Telefone')
+                mainMenuEditTelefone(usuarios, cpf)
             elif opc == '7':
                 editNasc(usuarios, cpf)
                 print('Data de nascimento alterada com sucesso.')
@@ -183,7 +265,7 @@ def mainEditUser(usuarios, cpf):
                 editRua(usuarios, cpf)
                 editNro(usuarios, cpf)
                 editCep(usuarios, cpf)
-                editEmail(usuarios, cpf)
+                mainMenuEditEmail(usuarios,cpf)
                 editTelefone(usuarios, cpf)
                 editNasc(usuarios, cpf)
                 editProfissao(usuarios, cpf)
@@ -306,7 +388,12 @@ def editar_genero(livros, isbn):
     genero = input("Digite o novo gênero do livro: ")
     livros[isbn][1] = genero
     return True
-def editar_autores(livros, isbn):
+def inserir_autor(livros,isbn):
+    qtd = int(input('Informe a quantidade de autores que deseja adicionar:'))
+    for i in range(qtd):
+        autor = input('Informe o nome do autor:')
+        livros[isbn][2].append(autor)
+def editar_autor(livros, isbn):
     autor = input("Digite o nome autor(a) que deseja alterar: ")
     novo_autor = input("Digite o novo nome do autor(a): ")
 
@@ -316,10 +403,46 @@ def editar_autores(livros, isbn):
             pos = i
     
     if pos >= 0:
-        livros[isbn][2][i] = novo_autor
+        livros[isbn][2][pos] = novo_autor
         return True
     else:
         return False
+def deletar_autor(livros, isbn):
+    autor = input("Digite o nome autor(a) que deseja deletar: ")
+
+    pos = -1
+    for i in range(len(livros[isbn][2])):
+        if livros[isbn][2][i] == autor:
+            pos = i
+    
+    if pos >= 0:
+        del livros[isbn][2][pos]
+        return True
+    else:
+        return False
+def menu_editar_autor():
+    print('1 - Editar Autor')
+    print('2 - Inserir Autor')
+    print('3 - Deletar Autor')
+    print('0 - Voltar ao Submenu de Livros')
+    opc = input('Escolha uma opção:')
+    return opc
+def main_editar_autor(livros,isbn):
+    opc = '1'
+    while opc != '0':
+        opc = menu_editar_autor()
+        if opc == '1':
+            print('Editando Autor Específico...')
+            editar_autor(livros, isbn)
+        elif opc == '2':
+            print('Inserindo Autor...')
+            inserir_autor(livros, isbn)
+        elif opc == '3':
+            print('Excluindo Autor...')
+            deletar_autor(livros, isbn)
+        elif opc == '0':
+            print('Retornando ao Submenu de Livros....')
+            
 def editar_paginas(livros, isbn):
     pags = int(input("Digite o novo número de paginas que deseja editar: "))
     livros[isbn][3] = pags
@@ -346,7 +469,7 @@ def main_menu_editar_livro(livros):
                 editar_genero(livros, isbn)
             elif op == '3':
                 print("Editando os autores do livro...")
-                editar_autores(livros, isbn)
+                main_editar_autor(livros, isbn)
             elif op == '4':
                 print("Editando o número de paginas do livro...")
                 editar_paginas(livros, isbn)
@@ -354,7 +477,7 @@ def main_menu_editar_livro(livros):
                 print("Editando todos dados do livro...")
                 editar_genero(livros, isbn)
                 editar_paginas(livros, isbn)
-                editar_autores(livros, isbn)
+                main_editar_autor(livros, isbn)
             elif op == '0':
                 print('Retornando ao Submenu de Livros...')
             else:
@@ -669,16 +792,13 @@ def existe_arquivo(nome_arquivo):
 ##### RELATORIOS ######
 
 def calcularIdade(usuarios, data):
-
     idades_por_cpf = dict()
     data = data.split('/')
     for cpf in usuarios.keys():
         nasc = usuarios[cpf][6]
         nasc = nasc.split('/')
         if nasc[1] == data[1]:
-            if nasc[0] == data[0]:
-                idade = int(data[2]) - int(nasc[2])
-            elif nasc[0] > data[0]:
+            if nasc[0] >= data[0]:
                 idade = int(data[2]) - int(nasc[2])
             elif nasc[0] < data[0]:
                 idade = (int(data[2]) - int(nasc[2])) - 1
@@ -688,17 +808,17 @@ def calcularIdade(usuarios, data):
             idade = int(data[2]) - int(nasc[2])
         idades_por_cpf[cpf] = idade
     return idades_por_cpf
-def guardarCpfRelatorioIdade(usuarios, x):
+def guardarCpfRelatorioIdade(usuarios, idade_minima):
     data = input('Informe a data atual (dd/mm/aaaa):')
     idades = calcularIdade(usuarios, data)
     guardar_cpf = []
     for cpf in idades.keys():
-        if idades[cpf] >= x:
+        if idades[cpf] >= idade_minima:
             guardar_cpf.append(cpf)
     return guardar_cpf
 def relatorioIdade(usuarios, arquivo):
-    x = int(input('Digite a idade mínima desejada:'))
-    cpf_idade_desejada = guardarCpfRelatorioIdade(usuarios, x)
+    idade_minima = int(input('Digite a idade mínima desejada:'))
+    cpf_idade_desejada = guardarCpfRelatorioIdade(usuarios, idade_minima)
     escreverRelatorioUsuario(cpf_idade_desejada, usuarios, arquivo)
     if len(cpf_idade_desejada) > 0:
         for i in cpf_idade_desejada:
@@ -707,15 +827,15 @@ def relatorioIdade(usuarios, arquivo):
     else:
         print()
         print('Não há usuários maiores ou iguais a idade mínima desejada.')
-def guardarIsbnQuantAutores(livros, x):
+def guardarIsbnQuantAutores(livros, minimo_de_autores):
     isbn_desejado = []
     for isbn in livros:
-        if len(livros[isbn][2]) >= x:
+        if len(livros[isbn][2]) >= minimo_de_autores:
             isbn_desejado.append(isbn)
     return isbn_desejado
 def relatorioAutores(livros, arquivo):
-    x = int(input('Informe a quantidade mínima de autores desejada:'))
-    isbn_desejado = guardarIsbnQuantAutores(livros, x)
+    minimo_de_autores = int(input('Informe a quantidade mínima de autores desejada:'))
+    isbn_desejado = guardarIsbnQuantAutores(livros, minimo_de_autores)
     escreverRelatorioLivros(isbn_desejado, livros, arquivo)
     if len (isbn_desejado) > 0:
         for i in isbn_desejado:
@@ -724,50 +844,50 @@ def relatorioAutores(livros, arquivo):
     else:
         print()
         print('Não há livros com a quantidade mínima de autores desejada.')
-def guardarEmprestimoData(emprestimos, x, y):
+def guardarEmprestimoData(emprestimos, data_minima, data_maxima):
     guardar_chave=[]
-    x = x.split('/')
-    x[0] = int(x[0])
-    x[1] = int(x[1])
-    x[2] = int(x[2])
-    y = y.split('/')
-    y[0] = int(y[0])
-    y[1] = int(y[1])
-    y[2] = int(y[2])
+    data_minima = data_minima.split('/')
+    data_minima[0] = int(data_minima[0])
+    data_minima[1] = int(data_minima[1])
+    data_minima[2] = int(data_minima[2])
+    data_maxima = data_maxima.split('/')
+    data_maxima[0] = int(data_maxima[0])
+    data_maxima[1] = int(data_maxima[1])
+    data_maxima[2] = int(data_maxima[2])
     for chave in emprestimos.keys():
         data = emprestimos[chave][0].split('/')
         data[0] = int(data[0])
         data[1] = int(data[1])
         data[2] = int(data[2])
-        if data[2] > x[2] and data[2] < y[2]:
+        if data[2] > data_minima[2] and data[2] < data_maxima[2]:
             guardar_chave.append(chave)
-        elif data[2] == x[2] and data[2] == y[2]:
-            if data[1] > x[1] and data[1] < y[1]:
+        elif data[2] == data_minima[2] and data[2] == data_maxima[2]:
+            if data[1] > data_minima[1] and data[1] < data_maxima[1]:
                 guardar_chave.append(chave)
-            elif data[1] == x[1] and data[1] == y[1]:
-                if data[0] >= x[0] and data[0] <= y[0]:
+            elif data[1] == data_minima[1] and data[1] == data_maxima[1]:
+                if data[0] >= data_minima[0] and data[0] <= data_maxima[0]:
                     guardar_chave.append(chave)
-            elif data[1] == x[1] and data[1] < y[1]:
-                if data[0] >= x[0]:
+            elif data[1] == data_minima[1] and data[1] < data_maxima[1]:
+                if data[0] >= data_minima[0]:
                     guardar_chave.append(chave)
-            elif data[1] > x[1] and data[1] == y[1]:
-                if data[0] <= y[0]:
+            elif data[1] > data_minima[1] and data[1] == data_maxima[1]:
+                if data[0] <= data_maxima[0]:
                     guardar_chave.append(chave)
-        elif data[2] == x[2] and data[2] < y[2]:
-            if data[1] > x[1]:
+        elif data[2] == data_minima[2] and data[2] < data_maxima[2]:
+            if data[1] > data_minima[1]:
                 guardar_chave.append(chave)
-            elif data[1] == x[1] and data[0] >= x[0]:
+            elif data[1] == data_minima[1] and data[0] >= data_minima[0]:
                 guardar_chave.append(chave)
-        elif data[2] > x[2] and data[2] == y[2]:
-            if data[1] < y[1]:
+        elif data[2] > data_minima[2] and data[2] == data_maxima[2]:
+            if data[1] < data_maxima[1]:
                 guardar_chave.append(chave)
-            elif data[1] == y[1] and data[0] <= y[0]:
+            elif data[1] == data_maxima[1] and data[0] <= data_maxima[0]:
                 guardar_chave.append(chave)
     return guardar_chave
 def guardarRelatorioEmprestimo(emprestimos,usuarios, livros):
-    data1 = input('Informe a data mínima desejada (dd/mm/aaaa):')
-    data2 = input('Informe a data máxima desejada (dd/mm/aaaa):')
-    chaves = guardarEmprestimoData(emprestimos, data1, data2)
+    data_minima = input('Informe a data mínima desejada (dd/mm/aaaa):')
+    data_maxima = input('Informe a data máxima desejada (dd/mm/aaaa):')
+    chaves = guardarEmprestimoData(emprestimos, data_minima, data_maxima)
     relatorio = []
     if len(chaves) > 0:
         for dados in chaves:
@@ -799,7 +919,6 @@ def main():
     arquivo_usuario = 'usuarios.txt'
     arquivo_livros = 'livros.txt'
     arquivo_emprestimos = 'emprestimos.txt'
-    arquivo_relatorio_emprestimo = 'relatorio_emprestimos.txt'
     usuarios = lerArquivoUsuario(arquivo_usuario)
     livros = lerArquivoLivros(arquivo_livros)
     emprestimos = lerArquivoEmprestimos(arquivo_emprestimos)
