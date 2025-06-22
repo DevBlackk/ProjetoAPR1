@@ -197,7 +197,7 @@ def deletarTelefone(usuarios,cpf):
             pos = i
     
     if pos >= 0:
-        del usuarios[cpf][5][i]
+        del usuarios[cpf][5][pos]
         return True
     else:
         return False  
